@@ -7,8 +7,10 @@ import 'package:personal_blog/global/g_dio.dart';
 import 'package:personal_blog/global/g_value.dart';
 
 class WordWritePageController extends GetxController {
-  TextEditingController title = TextEditingController();
-  TextEditingController content = TextEditingController();
+  late TextEditingController title = TextEditingController();
+  late TextEditingController content = TextEditingController();
+
+  RxBool writeDone = false.obs;
 
   writeCreate() async {
     try {
@@ -22,10 +24,10 @@ class WordWritePageController extends GetxController {
           'selectDate': "2024-01-20 10:00:00.123Z"
         },
       );
-      inspect(res.data);
       if (res.statusCode == 400) {
         throw Error();
       }
+      Get.back();
     } catch (e, stackTrace) {
       print(e);
       print(stackTrace);
