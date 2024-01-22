@@ -94,6 +94,7 @@ class WordWritePage extends GetView<WordWritePageController> {
             ),
             ElevatedButton(
               onPressed: () {
+                //! 토스트 메세지 패키지 변경
                 MotionToast(
                   icon: Icons.check_circle_outline,
                   primaryColor: Colors.green,

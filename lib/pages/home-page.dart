@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:personal_blog/controller/home-page-controller.dart';
 import 'package:personal_blog/pages/word-list.dart';
 import 'package:personal_blog/pages/word-write-page.dart';
@@ -47,26 +46,6 @@ class HomePage extends GetView<HomePageController> {
           SizedBox(
             height: 10,
           ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                // MotionToast.success(
-                //   title: Text('title'),
-                //   description: Text('test success'),
-                // ).show(context);
-                // MotionToast(
-                //   icon: Icons.check_circle_outline,
-                //   primaryColor: Colors.green,
-                //   description: Text("게시글 작성 완료"),
-                //   width: MediaQuery.of(context).size.width * 0.5,
-                //   height: 75,
-                // ).show(context);
-              },
-              child: Text(
-                'toast test',
-              ),
-            ),
-          )
         ],
       ),
     );
