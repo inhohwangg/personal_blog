@@ -9,40 +9,57 @@ class PostInfoPage extends GetView<PostInfoPageController> {
   @override
   Widget build(BuildContext context) {
     PostInfoPageController controller = Get.put(PostInfoPageController());
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.1,
-          vertical: MediaQuery.of(context).size.height * 0.1,
-        ),
-        child: Column(
-          children: [
-            Container(
-              child: Center(
-                child: Text(
-                  controller.testData['title'],
-                  style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.05,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.15),
+      child: Center(
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_new,
               ),
             ),
-            SizedBox(
-              height: 30,
+          ),
+          body: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.1,
+              vertical: MediaQuery.of(context).size.height * 0.1,
             ),
-            Container(
-              child: Center(
-                child: Text(
-                  controller.testData['content'],
-                  style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.025,
-                    fontWeight: FontWeight.bold,
+            child: Column(
+              children: [
+                Container(
+                  child: Center(
+                    child: Text(
+                      controller.testData['title'],
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  child: Center(
+                    child: Text(
+                      controller.testData['content'],
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.025,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
