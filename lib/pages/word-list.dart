@@ -18,14 +18,14 @@ class WordListPage extends GetView<WordListPageController> {
             centerTitle: true,
             automaticallyImplyLeading: false,
             title: Text('게시글 목록', textAlign: TextAlign.center),
-            leading: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-              ),
-            ),
+            // leading: IconButton(
+            //   onPressed: () {
+            //     Get.back();
+            //   },
+            //   icon: Icon(
+            //     Icons.arrow_back_ios_new,
+            //   ),
+            // ),
             actions: [
               IconButton(
                 onPressed: () {},

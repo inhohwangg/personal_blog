@@ -13,14 +13,14 @@ class WordWritePage extends GetView<WordWritePageController> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-          ),
-        ),
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Get.back();
+        //   },
+        //   icon: Icon(
+        //     Icons.arrow_back_ios_new,
+        //   ),
+        // ),
         centerTitle: true,
         title: Text('게시글 작성하기'),
       ),
