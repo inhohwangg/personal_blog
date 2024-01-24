@@ -1,10 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:personal_blog/controller/word-list-page-controller.dart';
-import 'package:personal_blog/global/g_print.dart';
-
 import 'post-info-pg.dart';
 
 class WordListPage extends GetView<WordListPageController> {
@@ -14,8 +10,8 @@ class WordListPage extends GetView<WordListPageController> {
   Widget build(BuildContext context) {
     WordListPageController controller = Get.put(WordListPageController());
     return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.15),
+      // padding: EdgeInsets.symmetric(
+      //     horizontal: MediaQuery.of(context).size.width * 0.15),
       child: Center(
         child: Scaffold(
           appBar: AppBar(
@@ -45,7 +41,7 @@ class WordListPage extends GetView<WordListPageController> {
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.2,
+                    horizontal: MediaQuery.of(context).size.width * 0.1,
                     vertical: MediaQuery.of(context).size.height * 0.1,
                   ),
                   width: MediaQuery.of(context).size.width,

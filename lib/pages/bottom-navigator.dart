@@ -33,8 +33,6 @@ class BottomNavigator extends GetView<BottomNavigatorController> {
                 () => BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
                   showUnselectedLabels: true,
-
-                  // backgroundColor: Get.theme.primaryColor,
                   selectedItemColor: Get.theme.primaryColor,
                   unselectedItemColor: Get.theme.primaryColor.withOpacity(0.5),
                   items: [
