@@ -19,6 +19,8 @@ dependencies:
   pocketbase: ^0.17.1
   media_kit: ^1.1.10+1
   motion_toast: ^2.8.0
+  font_awesome_flutter: ^10.7.0
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +32,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/
     - assets/images/
 
   # fonts:
