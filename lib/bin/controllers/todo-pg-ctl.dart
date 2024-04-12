@@ -39,16 +39,24 @@ class TodoPageController extends GetxController {
           'description': desc.text,
         });
         if (res.statusCode! < 300) {
+          title.clear();
+          desc.clear();
           Get.showSnackbar(GetSnackBar(
             title: 'Todo 생성',
-            messageText: Text('Todo 데이터 생성 완료'),
+            messageText: Text(
+              'Todo 데이터 생성 완료',
+              style: TextStyle(color: Colors.white),
+            ),
             backgroundColor: Color(0xFF297525).withOpacity(0.75),
+            duration: Duration(seconds: 2),
+            margin: EdgeInsets.only(top: 10),
           ));
         } else {
           Get.showSnackbar(GetSnackBar(
             title: 'Todo 생성 실패',
             messageText: Text('Todo 데이터 생성 실패'),
-            backgroundColor: Color(0xFF297525).withOpacity(0.75),
+            backgroundColor: Colors.red[300]!.withOpacity(0.5),
+            duration: Duration(seconds: 2),
           ));
         }
       }
