@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -22,315 +24,302 @@ class TodoPageMainPage extends GetView {
               fontStyle: FontStyle.normal,
             ),
           ),
-          // actions: [
-          //   IconButton(
-          //     onPressed: () {
-          //       postTodo(context, controller);
-          //     },
-          //     icon: FaIcon(
-          //       FontAwesomeIcons.penToSquare,
-          //       color: Colors.blue[800]!.withOpacity(0.7),
-          //     ),
-          //   ),
-          // ],
         ),
         body: Obx(() => controller.isLoading.value == true
-            ? controller.todayDataList.isNotEmpty
-                ? Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Text(
-                            controller.now.toString().split(' ')[0],
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                fontStyle: FontStyle.normal),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 8,
-                          child: ListView.builder(
-                            itemCount: controller.todayDataList.length,
-                            itemBuilder: (context, index) {
-                              Map item = controller.todayDataList[index];
-                              return item['is_completed'] == false
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        confirmModal(context, item);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue[100]!
-                                              .withOpacity(0.5),
-                                          borderRadius: BorderRadius.circular(
-                                            10,
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.only(top: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  item['title'],
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontStyle:
-                                                          FontStyle.normal),
-                                                ),
-                                                Text(
-                                                  item['description'],
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontStyle:
-                                                          FontStyle.normal),
-                                                ),
-                                                Text(
-                                                  item['created_at']
-                                                      .split('T')[0],
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontStyle:
-                                                          FontStyle.normal),
-                                                ),
-                                              ],
-                                            ),
-                                            IconButton(
-                                              onPressed: () {
-                                                controller.checkStatus.value =
-                                                    true;
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                      actionsPadding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 15,
-                                                              vertical: 15),
-                                                      contentPadding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 30,
-                                                              vertical: 5),
-                                                      titlePadding:
-                                                          EdgeInsets.zero,
-                                                      title: Text(''),
-                                                      content: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          // SizedBox(
-                                                          //   height: 10,
-                                                          // ),
-                                                          Text(
-                                                            '완료하기',
-                                                            style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Text(
-                                                              '${item['title']} 를 완료처리 하시겠습니까?'),
-                                                        ],
-                                                      ),
-                                                      actions: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            InkWell(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              onTap: () {
-                                                                Get.back();
-                                                              },
-                                                              child: Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                        border: Border
-                                                                            .all(
-                                                                          width:
-                                                                              1,
-                                                                          color: Colors
-                                                                              .grey[500]!
-                                                                              .withOpacity(0.5),
-                                                                        ),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(5)),
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            10,
-                                                                        vertical:
-                                                                            10),
-                                                                child: Center(
-                                                                  child: Text(
-                                                                      '닫기'),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 10,
-                                                            ),
-                                                            InkWell(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              onTap: () {
-                                                                controller
-                                                                    .checkDone(
-                                                                        item);
-                                                                Get.back();
-                                                              },
-                                                              child: Container(
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                5),
-                                                                    color: Colors
-                                                                        .amber[
-                                                                            900]!
-                                                                        .withOpacity(
-                                                                            0.5)),
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            10,
-                                                                        vertical:
-                                                                            10),
-                                                                child: Center(
-                                                                  child: Text(
-                                                                    '확인',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        )
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              icon: Icon(
-                                                Icons
-                                                    .check_circle_outline_outlined,
-                                                color: Colors.blue[400]!
-                                                    .withOpacity(0.75),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  : SizedBox();
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(20),
-                                  onTap: () {
-                                    postTodo(context, controller);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.blue[300]!.withOpacity(0.5),
-                                    ),
-                                    width: 60,
-                                    height: 60,
-                                    child: Center(
-                                      child: FaIcon(FontAwesomeIcons.pen),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : SizedBox(
-                    child: Column(
+            ? Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: Column(
+                  children: [
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Center(
-                          child: Text(
-                            '해야할 일이 없습니다.',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[500]!.withOpacity(0.5),
+                        IconButton(
+                            onPressed: () {
+                              controller.dayMinus();
+                            },
+                            icon: Icon(Icons.arrow_back_ios_new)),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Obx(
+                          () => Container(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              controller.now.toString().split(' ')[0],
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  fontStyle: FontStyle.normal),
                             ),
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          width: 10,
                         ),
-                        InkWell(
-                          borderRadius: BorderRadius.circular(20),
-                          onTap: () {
-                            postTodo(context, controller);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.blue[300]!.withOpacity(0.45)),
-                            child: Text('Todo 등록하기'),
-                          ),
-                        )
+                        IconButton(
+                            onPressed: () {
+                              controller.dayPlus();
+                            },
+                            icon: Icon(Icons.arrow_forward_ios)),
                       ],
                     ),
-                  )
-            : Center(
-                child: CircularProgressIndicator(),
+                    Expanded(
+                      flex: 8,
+                      child: RefreshIndicator(
+                        color: Colors.blue[900]!.withOpacity(0.8),
+                        onRefresh: () {
+                          return controller.todoDataGet();
+                        },
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(
+                              parent: BouncingScrollPhysics()),
+                          itemCount: controller.todayDataList.length,
+                          itemBuilder: (context, index) {
+                            Map item = controller.todayDataList[index];
+                            return GestureDetector(
+                              onTap: () {
+                                confirmModal(context, item);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue[100]!.withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
+                                ),
+                                margin: EdgeInsets.only(top: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          item['title'],
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.normal),
+                                        ),
+                                        Text(
+                                          item['description'],
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              fontStyle: FontStyle.normal),
+                                        ),
+                                        Text(
+                                          item['created_at'].split('T')[0],
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              fontStyle: FontStyle.normal),
+                                        ),
+                                      ],
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        controller.checkStatus.value = true;
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              actionsPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 15,
+                                                      vertical: 15),
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 30,
+                                                      vertical: 5),
+                                              titlePadding: EdgeInsets.zero,
+                                              title: Text(''),
+                                              content: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    '완료하기',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                      '${item['title']} 를 완료처리 하시겠습니까?'),
+                                                ],
+                                              ),
+                                              actions: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    InkWell(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      onTap: () {
+                                                        Get.back();
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                border:
+                                                                    Border.all(
+                                                                  width: 1,
+                                                                  color: Colors
+                                                                      .grey[
+                                                                          500]!
+                                                                      .withOpacity(
+                                                                          0.5),
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5)),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 10,
+                                                                vertical: 10),
+                                                        child: Center(
+                                                          child: Text('닫기'),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    InkWell(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      onTap: () {
+                                                        controller
+                                                            .checkDone(item);
+                                                        Get.back();
+                                                      },
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5),
+                                                            color: Colors
+                                                                .amber[900]!
+                                                                .withOpacity(
+                                                                    0.5)),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 10,
+                                                                vertical: 10),
+                                                        child: Center(
+                                                          child: Text(
+                                                            '확인',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      icon: Icon(
+                                        Icons.check_circle_outline_outlined,
+                                        color:
+                                            Colors.blue[400]!.withOpacity(0.75),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(20),
+                              onTap: () {
+                                postTodo(context, controller);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.blue[300]!.withOpacity(0.5),
+                                ),
+                                width: 60,
+                                height: 60,
+                                child: Center(
+                                  child: FaIcon(FontAwesomeIcons.pen),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : SizedBox(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Text(
+                        '해야할 일이 없습니다.',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[500]!.withOpacity(0.5),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: () {
+                        postTodo(context, controller);
+                      },
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.blue[300]!.withOpacity(0.45)),
+                        child: Text('Todo 등록하기'),
+                      ),
+                    )
+                  ],
+                ),
               )),
       ),
     );
