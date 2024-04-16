@@ -9,7 +9,7 @@ class TodoSettingPage extends GetView<TodoSettingPageController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Todo Setting Page'),
+        title: Text('설정'),
       ),
     );
   }
