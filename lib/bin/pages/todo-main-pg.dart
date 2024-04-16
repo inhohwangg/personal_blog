@@ -245,8 +245,12 @@ class TodoPageMainPage extends GetView {
                                       },
                                       icon: Icon(
                                         Icons.check_circle_outline_outlined,
-                                        color:
-                                            Colors.blue[400]!.withOpacity(0.75),
+                                        color: item['is_completed'] == true
+                                            ? Colors.green[700]!
+                                                .withOpacity(0.75)
+                                            : Colors.grey[400]!
+                                                .withOpacity(0.75),
+                                        size: 25,
                                       ),
                                     )
                                   ],
