@@ -12,9 +12,10 @@ import '../../global/g_value.dart';
 class TodoPageController extends GetxController {
   RxBool isLoading = true.obs;
   RxList todayDataList = [].obs;
-  DateTime now = DateTime.now();
+  Rx<DateTime> now = DateTime.now().obs;
   RxBool checkStatus = false.obs;
   RxList todoList = [].obs;
+  RxList todoSortData = [].obs;
   TextEditingController title = TextEditingController();
   TextEditingController desc = TextEditingController();
 
@@ -89,6 +90,20 @@ class TodoPageController extends GetxController {
     }
   }
 
+  dayTodoList() async {
+    todayDataList.clear();
+    try {
+      for (var i = 0; i < todoList.length; i++) {
+        if (now.toString().split(' ')[0] ==
+            todoList[i]['created_at'].split('T')[0]) {
+          todayDataList.add(todoList[i]);
+        }
+      }
+    } catch (e) {
+      printRed('todo-pg-ctl.dart dayTodoList Error Message : $e');
+    }
+  }
+
   checkDone(item) async {
     try {
       isLoading.value = false;
@@ -108,6 +123,18 @@ class TodoPageController extends GetxController {
       Get.snackbar('${item['title']} 실패', '', backgroundColor: Colors.red[300]);
       printRed('todo-pg-ctl.dart checkDone Error Message :$e');
     }
+  }
+
+  dayPlus() {
+    now.value = now.value.add(Duration(days: 1));
+    dayTodoList();
+    update();
+  }
+
+  dayMinus() {
+    now.value = now.value.subtract(Duration(days: 1));
+    dayTodoList();
+    update();
   }
 
   @override
