@@ -32,8 +32,8 @@ class TodoBottom extends GetView<TodoBottomController> {
                 label: '완료',
               ),
               BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.maps_home_work_outlined,
+                icon: FaIcon(
+                  FontAwesomeIcons.gear,
                 ),
                 label: '설정',
               ),
