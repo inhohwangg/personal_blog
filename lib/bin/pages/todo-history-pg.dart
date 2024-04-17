@@ -43,7 +43,10 @@ class TodoHistoryPage extends GetView {
                               padding: EdgeInsets.symmetric(vertical: 10),
                               child: Text(
                                 controller.now.toString().split(' ')[0],
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal),
                               ),
                             ),
                           ),
@@ -57,7 +60,8 @@ class TodoHistoryPage extends GetView {
                               icon: Icon(Icons.arrow_forward_ios)),
                         ],
                       ),
-                      Expanded(  // 추가된 Expanded
+                      Expanded(
+                        // 추가된 Expanded
                         child: Column(
                           children: [
                             Container(
@@ -65,21 +69,21 @@ class TodoHistoryPage extends GetView {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: TabBar(
-                                dividerColor: Colors.transparent,
-                                tabs: [
-                                Tab(text: '미완료 이력'),
-                                Tab(text: '완료 이력'),
-                              ]),
+                                  dividerColor: Colors.transparent,
+                                  tabs: [
+                                    Tab(text: '미완료 이력'),
+                                    Tab(text: '완료 이력'),
+                                  ]),
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            Expanded(  // TabBarView를 감싸는 Expanded
-                              child: TabBarView(children: [
-                                todoDone(controller),
-                                todoYet(controller)
-                              ])
-                            ),
+                            Expanded(
+                                // TabBarView를 감싸는 Expanded
+                                child: TabBarView(children: [
+                              todoYet(controller),
+                              todoDone(controller)
+                            ])),
                           ],
                         ),
                       ),
@@ -103,35 +107,40 @@ class TodoHistoryPage extends GetView {
           return controller.todoDataGet();
         },
         child: ListView.builder(
-          physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+          physics:
+              AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
           itemCount: controller.todayDataList.length,
           itemBuilder: (context, index) {
             Map item = controller.todayDataList[index];
-            return item['is_completed'] ? Container(
-              decoration: BoxDecoration(color: Colors.blue[900]!.withOpacity(0.3), borderRadius: BorderRadius.circular(10)),
-              padding: EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
-              ),
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item['title'],
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    item['description'],
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    item['created_at'].split('T')[0].toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ) : SizedBox();
+            return item['is_completed']
+                ? Container(
+                    decoration: BoxDecoration(
+                        color: Colors.blue[900]!.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10)),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item['title'],
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          item['description'],
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          item['created_at'].split('T')[0].toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  )
+                : SizedBox();
           },
         ),
       ),
@@ -145,35 +154,40 @@ class TodoHistoryPage extends GetView {
           return controller.todoDataGet();
         },
         child: ListView.builder(
-          physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+          physics:
+              AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
           itemCount: controller.todayDataList.length,
           itemBuilder: (context, index) {
             Map item = controller.todayDataList[index];
-            return item['is_completed'] == false ? Container(
-              decoration: BoxDecoration(color: Colors.blue[900]!.withOpacity(0.3), borderRadius: BorderRadius.circular(10)),
-              padding: EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
-              ),
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item['title'],
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    item['description'],
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    item['created_at'].split('T')[0].toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ) : SizedBox();
+            return item['is_completed'] == false
+                ? Container(
+                    decoration: BoxDecoration(
+                        color: Colors.blue[900]!.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10)),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item['title'],
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          item['description'],
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          item['created_at'].split('T')[0].toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  )
+                : SizedBox();
           },
         ),
       ),
