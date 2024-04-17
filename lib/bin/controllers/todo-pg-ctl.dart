@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -18,6 +17,17 @@ class TodoPageController extends GetxController {
   RxList todoSortData = [].obs;
   TextEditingController title = TextEditingController();
   TextEditingController desc = TextEditingController();
+
+  DateTime convertUtcToKst(String utcDateString) {
+    DateTime utcDate = DateTime.parse(utcDateString);
+    // UTC+9 시간대로 변환
+    DateTime kstDate = utcDate.add(Duration(hours: 9));
+    return kstDate;
+  }
+
+  String formDateTime(DateTime dateTime) {
+    return DateFormat('yyyy-MM-dd HH:mm:ss', 'ko_KR').format(dateTime);
+  }
 
   todoCreate() async {
     try {
@@ -75,16 +85,21 @@ class TodoPageController extends GetxController {
     try {
       var res = await dio.get('$baseUrl/api/todo');
       var todayFormat = DateFormat('yyyy-MM-dd');
-      var todayString = todayFormat.format(DateTime.now());
+      var todayString =
+          todayFormat.format(DateTime.now().add(Duration(hours: 9)));
 
       for (var i = 0; i < res.data.length; i++) {
-        if (res.data[i]['created_at'].split('T')[0] == todayString) {
+        var item = res.data[i];
+        DateTime utcTime = DateTime.parse(item['created_at']);
+        DateTime kstTime = utcTime.add(Duration(hours: 9));
+        item['created_at'] = kstTime.toIso8601String();
+
+        if (res.data[i]['created_at'].split('T')[0] ==
+            now.toString().split(' ')[0]) {
           todayDataList.add(res.data[i]);
         }
       }
       todoList.addAll(res.data);
-      inspect(todoList);
-      inspect(todayDataList);
     } catch (e) {
       printRed('todo-pg-ctl.dart todoDataGet Error Message $e');
     }
