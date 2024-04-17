@@ -24,16 +24,17 @@ class TodoBottom extends GetView<TodoBottomController> {
             unselectedItemColor: Get.theme.primaryColor.withOpacity(0.4),
             items: [
               BottomNavigationBarItem(
-                icon: FaIcon(FontAwesomeIcons.listCheck),
+                icon: FaIcon(FontAwesomeIcons.listCheck,size: 20,),
                 label: '현황',
               ),
               BottomNavigationBarItem(
-                icon: FaIcon(FontAwesomeIcons.clockRotateLeft),
+                icon: FaIcon(FontAwesomeIcons.clockRotateLeft,size: 20,),
                 label: '완료',
               ),
               BottomNavigationBarItem(
                 icon: FaIcon(
                   FontAwesomeIcons.gear,
+                  size: 20,
                 ),
                 label: '설정',
               ),
