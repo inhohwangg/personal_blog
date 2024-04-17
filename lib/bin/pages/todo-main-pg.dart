@@ -16,12 +16,17 @@ class TodoPageMainPage extends GetView {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Todo 현황',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              fontStyle: FontStyle.normal,
+          title: GestureDetector(
+            onTap: () {
+              controller.todoDataGet();
+            },
+            child: Text(
+              'Todo 현황',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.normal,
+              ),
             ),
           ),
         ),
@@ -46,7 +51,10 @@ class TodoPageMainPage extends GetView {
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: Text(
                               controller.now.toString().split(' ')[0],
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  fontStyle: FontStyle.normal),
                             ),
                           ),
                         ),
@@ -68,7 +76,8 @@ class TodoPageMainPage extends GetView {
                           return controller.todoDataGet();
                         },
                         child: ListView.builder(
-                          physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+                          physics: AlwaysScrollableScrollPhysics(
+                              parent: BouncingScrollPhysics()),
                           itemCount: controller.todayDataList.length,
                           itemBuilder: (context, index) {
                             Map item = controller.todayDataList[index];
@@ -77,7 +86,8 @@ class TodoPageMainPage extends GetView {
                                 confirmModal(context, item);
                               },
                               child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
                                 decoration: BoxDecoration(
                                   color: Colors.blue[100]!.withOpacity(0.5),
                                   borderRadius: BorderRadius.circular(
@@ -86,22 +96,33 @@ class TodoPageMainPage extends GetView {
                                 ),
                                 margin: EdgeInsets.only(top: 10),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           item['title'],
-                                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, fontStyle: FontStyle.normal),
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.normal),
                                         ),
                                         Text(
                                           item['description'],
-                                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal),
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              fontStyle: FontStyle.normal),
                                         ),
                                         Text(
-                                          item['created_at'].split('T')[0],
-                                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal),
+                                          '${item['created_at'].split('T')[0]} ${item['created_at'].split('T')[1].split('.')[0]}',
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              fontStyle: FontStyle.normal),
                                         ),
                                       ],
                                     ),
@@ -112,47 +133,73 @@ class TodoPageMainPage extends GetView {
                                           context: context,
                                           builder: (context) {
                                             return AlertDialog(
-                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                              actionsPadding: EdgeInsets.only(bottom: 10, right: 10),
-                                              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              actionsPadding: EdgeInsets.only(
+                                                  bottom: 10, right: 10),
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 15),
                                               titlePadding: EdgeInsets.zero,
                                               // title: Text(''),
                                               content: Column(
                                                 mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     '저장',
                                                     style: TextStyle(
                                                       fontSize: 18,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
                                                   SizedBox(
                                                     height: 10,
                                                   ),
-                                                  Text('${item['title']} 를 완료 하시겠습니까?'),
+                                                  Text(
+                                                      '${item['title']} 를 완료 하시겠습니까?'),
                                                 ],
                                               ),
                                               actions: [
                                                 Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
                                                   children: [
                                                     InkWell(
-                                                      borderRadius: BorderRadius.circular(5),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
                                                       onTap: () {
                                                         Get.back();
                                                       },
                                                       child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.grey[700]!.withOpacity(0.15),
-                                                          borderRadius: BorderRadius.circular(20),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors
+                                                              .grey[700]!
+                                                              .withOpacity(
+                                                                  0.15),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
                                                         ),
-                                                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 20,
+                                                                vertical: 5),
                                                         child: Center(
                                                           child: Text(
                                                             '닫기',
-                                                            style: TextStyle(color: Colors.grey[700]!.withOpacity(0.55)),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .grey[700]!
+                                                                    .withOpacity(
+                                                                        0.55)),
                                                           ),
                                                         ),
                                                       ),
@@ -161,18 +208,39 @@ class TodoPageMainPage extends GetView {
                                                       width: 10,
                                                     ),
                                                     InkWell(
-                                                      borderRadius: BorderRadius.circular(5),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
                                                       onTap: () {
-                                                        controller.checkDone(item);
+                                                        controller
+                                                            .checkDone(item);
                                                         Get.back();
                                                       },
                                                       child: Container(
-                                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.blue[200]!.withOpacity(0.5)),
-                                                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                            color: Colors
+                                                                .blue[200]!
+                                                                .withOpacity(
+                                                                    0.5)),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 20,
+                                                                vertical: 5),
                                                         child: Center(
                                                           child: Text(
                                                             '확인',
-                                                            style: TextStyle(color: Colors.blue[900]!.withOpacity(0.5), fontWeight: FontWeight.w600),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .blue[900]!
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
                                                           ),
                                                         ),
                                                       ),
@@ -186,7 +254,11 @@ class TodoPageMainPage extends GetView {
                                       },
                                       icon: Icon(
                                         Icons.check_circle_outline_outlined,
-                                        color: item['is_completed'] == true ? Colors.green[700]!.withOpacity(0.75) : Colors.grey[400]!.withOpacity(0.75),
+                                        color: item['is_completed'] == true
+                                            ? Colors.green[700]!
+                                                .withOpacity(0.75)
+                                            : Colors.grey[400]!
+                                                .withOpacity(0.75),
                                         size: 25,
                                       ),
                                     )
@@ -251,8 +323,11 @@ class TodoPageMainPage extends GetView {
                         postTodo(context, controller);
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.blue[300]!.withOpacity(0.45)),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.blue[300]!.withOpacity(0.45)),
                         child: Text('Todo 등록하기'),
                       ),
                     )
@@ -269,7 +344,8 @@ class TodoPageMainPage extends GetView {
       builder: (context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           title: Text('Todo 만들기'),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,7 +353,10 @@ class TodoPageMainPage extends GetView {
             children: [
               Text(
                 '제목',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal),
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.normal),
               ),
               SizedBox(
                 height: 10,
@@ -286,7 +365,8 @@ class TodoPageMainPage extends GetView {
                 decoration: InputDecoration(
                   hintText: '제목 입력하기',
                   hintStyle: TextStyle(fontSize: 12),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide(width: 1, color: Color(0xFFAAAAAA)),
@@ -299,7 +379,10 @@ class TodoPageMainPage extends GetView {
               ),
               Text(
                 '설명',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal),
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.normal),
               ),
               SizedBox(
                 height: 10,
@@ -308,7 +391,8 @@ class TodoPageMainPage extends GetView {
                 decoration: InputDecoration(
                   hintText: '설명 입력하기',
                   hintStyle: TextStyle(fontSize: 12),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide(
@@ -345,7 +429,8 @@ class TodoPageMainPage extends GetView {
         return AlertDialog(
           contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           actionsPadding: EdgeInsets.only(bottom: 10, right: 10),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           // title: Text(item['title']),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,14 +438,20 @@ class TodoPageMainPage extends GetView {
             children: [
               Text(
                 item['description'],
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal),
+                style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal),
               ),
               SizedBox(
                 height: 10,
               ),
               Text(
                 '날짜 : ${item['created_at'].split('T')[0]}',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal),
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal),
               ),
             ],
           ),
@@ -382,7 +473,8 @@ class TodoPageMainPage extends GetView {
                     child: Center(
                       child: Text(
                         '확인',
-                        style: TextStyle(color: Colors.grey[700]!.withOpacity(0.55)),
+                        style: TextStyle(
+                            color: Colors.grey[700]!.withOpacity(0.55)),
                       ),
                     ),
                   ),
@@ -394,7 +486,9 @@ class TodoPageMainPage extends GetView {
                   onTap: () {},
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.amber[600]),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.amber[600]),
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     child: Center(
                       child: Text(
