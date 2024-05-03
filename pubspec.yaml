@@ -21,6 +21,8 @@ dependencies:
   motion_toast: ^2.8.0
   font_awesome_flutter: ^10.7.0
   intl: ^0.19.0
+  image_picker: ^1.0.8
+  http_parser: ^4.0.2
 
 dev_dependencies:
   flutter_test:
