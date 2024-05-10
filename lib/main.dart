@@ -2,8 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'bin/pages/todo-bottom.dart';
+import 'package:personal_blog/pages/download/download-pg.dart';
 
 class NoCheckCertificateHttpOverrides extends HttpOverrides {
   @override
@@ -26,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       // home: LoginPageTestPage(),
-      home: TodoBottom(),
+      home: DownloadPage(),
     );
   }
 }
