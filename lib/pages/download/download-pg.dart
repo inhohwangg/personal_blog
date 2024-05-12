@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:ffmpeg_kit_flutter_audio/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter_audio/return_code.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:path/path.dart' as path;
+
+import '../../global/g_print.dart';
 
 class DownloadPage extends StatefulWidget {
   const DownloadPage({super.key});
@@ -18,7 +20,27 @@ class _DownloadPageState extends State<DownloadPage> {
   bool _isDownloading = false;
   String _downloadProgress = '';
   String _saveProgress = '';
+  String _audioSaveProgress = '';
+  String conversionProgress = '';
   File? _tempFile;
+
+  Future<void> convertVideoToAudio(File videoFile) async {
+    String outputPath = videoFile.path.replaceAll('.mp4', '.aac');
+    String command = '-y -i "${videoFile.path}" -vn -acodec copy "$outputPath"';
+    await FFmpegKit.execute(command).then((session) async {
+      final returnCode = await session.getReturnCode();
+      if (returnCode != null && ReturnCode.isSuccess(returnCode)) {
+        setState(() {
+          conversionProgress = '변환 완료: $outputPath';
+          _tempFile = File(outputPath);
+        });
+      } else {
+        setState(() {
+          conversionProgress = '변환 실패';
+        });
+      }
+    });
+  }
 
   Future<void> downloadVideo(String url) async {
     setState(() {
@@ -82,11 +104,30 @@ class _DownloadPageState extends State<DownloadPage> {
     }
   }
 
+  void oudioSaveFile() async {
+    if (_tempFile != null) {
+      // 외부 저장소의 다운로드 디렉토리 경로를 가져옵니다.
+      final directory = Directory("/storage/emulated/0/Download"); // 예시 경로
+      if (!await directory.exists()) {
+        await directory.create(recursive: true); // 디렉토리가 없다면 생성합니다.
+      }
+      // 파일을 새 위치로 이동합니다.
+      final String newPath =
+          path.join(directory.path, path.basename(_tempFile!.path));
+      await _tempFile!.copy(newPath);
+
+      setState(() {
+        _audioSaveProgress = '오디오 파일이 저장되었습니다: $newPath';
+      });
+    }
+  }
+
   void reset() {
     setState(() {
       _controller.text = '';
       _downloadProgress = '';
       _saveProgress = '';
+      _audioSaveProgress = '';
       _isDownloading = true;
     });
   }
@@ -118,21 +159,25 @@ class _DownloadPageState extends State<DownloadPage> {
             ),
           ),
           ElevatedButton(
-            // onPressed:
-            //     _isDownloading ? null : () => downloadVideo(_controller.text),
             onPressed: () {
               _isDownloading ? null : downloadVideo(_controller.text);
             },
             child: Text('다운로드'),
           ),
           SizedBox(height: 20),
-          Text(_downloadProgress),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Text(_downloadProgress),
+          ),
           if (!_isDownloading && _tempFile != null) // 다운로드가 완료되었을 때만 저장 버튼 활성화
             ElevatedButton(
               onPressed: saveFile,
               child: Text('저장소에 저장'),
             ),
-          Text(_saveProgress), // 저장 상태 메시지 표시
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Text(_saveProgress),
+          ), // 저장 상태 메시지 표시
           ElevatedButton(
             onPressed: () {
               reset();
@@ -140,6 +185,36 @@ class _DownloadPageState extends State<DownloadPage> {
             child: Text(
               '초기화',
             ),
+          ),
+          if (!_isDownloading && _tempFile != null) // 변환 버튼
+            GestureDetector(
+              onTap: () => convertVideoToAudio(_tempFile!),
+              child: Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text('오디오로 변환하기', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+          Text(conversionProgress),
+
+          if (!_isDownloading && _tempFile != null) // 변환 버튼
+            GestureDetector(
+              onTap: () => oudioSaveFile(),
+              child: Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text('오디오 저장하기', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Text(_audioSaveProgress),
           )
         ],
       ),
