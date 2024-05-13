@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:ffmpeg_kit_flutter_audio/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter_audio/return_code.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:personal_blog/global/g_print.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:path/path.dart' as path;
-
-import '../../global/g_print.dart';
 
 class DownloadPage extends StatefulWidget {
   const DownloadPage({super.key});
@@ -23,6 +23,7 @@ class _DownloadPageState extends State<DownloadPage> {
   String _audioSaveProgress = '';
   String conversionProgress = '';
   File? _tempFile;
+  RxString videoTitle = ''.obs;
 
   Future<void> convertVideoToAudio(File videoFile) async {
     String outputPath = videoFile.path.replaceAll('.mp4', '.aac');
@@ -45,12 +46,16 @@ class _DownloadPageState extends State<DownloadPage> {
   Future<void> downloadVideo(String url) async {
     setState(() {
       _isDownloading = true;
-      _downloadProgress = "다운로드 시작...";
+      _downloadProgress = "조회 시작...";
+      videoTitle.value = '';
     });
 
     var yt = YoutubeExplode();
     try {
       var videoId = VideoId(url);
+      var video = await yt.videos.get(videoId);
+      videoTitle.value = video.title;
+      printRed(videoTitle);
       var manifest = await yt.videos.streamsClient.getManifest(videoId);
       var streamInfo = manifest.muxed.withHighestBitrate();
       var stream = yt.videos.streamsClient.get(streamInfo);
@@ -64,7 +69,7 @@ class _DownloadPageState extends State<DownloadPage> {
       await fileStream.close();
 
       setState(() {
-        _downloadProgress = "다운로드 완료: ${file.path}";
+        _downloadProgress = "조회 완료";
         _tempFile = file; // 파일 객체 저장
         _isDownloading = false; // 다운로드 상태 업데이트
       });
@@ -86,7 +91,47 @@ class _DownloadPageState extends State<DownloadPage> {
   //   }
   // }
 
-  void saveFile() async {
+  promptFileName(File file) async {
+    TextEditingController nameController =
+        TextEditingController(text: videoTitle.value);
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('파일 이름 입력'),
+          content: TextField(
+            controller: nameController,
+            decoration: InputDecoration(
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                hintText: '파일 이름을 입력해주세요.'),
+            // decoration: OutlinedBorder(
+            //   hintText: '파일 이름을 입력하세요'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text('취소'),
+            ),
+            TextButton(
+              onPressed: () {
+                saveFile(file, nameController.text);
+                Get.back();
+              },
+              child: Text(
+                '확인',
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void saveFile(File tempFile, String fileName) async {
     if (_tempFile != null) {
       // 외부 저장소의 다운로드 디렉토리 경로를 가져옵니다.
       final directory = Directory("/storage/emulated/0/Download"); // 예시 경로
@@ -94,12 +139,12 @@ class _DownloadPageState extends State<DownloadPage> {
         await directory.create(recursive: true); // 디렉토리가 없다면 생성합니다.
       }
       // 파일을 새 위치로 이동합니다.
-      final String newPath =
-          path.join(directory.path, path.basename(_tempFile!.path));
+      String safeFileName = fileName.replaceAll(RegExp(r'[\\/:*?"<>|]'), '');
+      final String newPath = path.join(directory.path, '$safeFileName.mp4');
       await _tempFile!.copy(newPath);
 
       setState(() {
-        _saveProgress = '파일이 저장되었습니다: $newPath';
+        _saveProgress = '파일이 저장되었습니다';
       });
     }
   }
@@ -162,7 +207,7 @@ class _DownloadPageState extends State<DownloadPage> {
             onPressed: () {
               _isDownloading ? null : downloadVideo(_controller.text);
             },
-            child: Text('다운로드'),
+            child: Text('조회하기'),
           ),
           SizedBox(height: 20),
           Container(
@@ -171,8 +216,10 @@ class _DownloadPageState extends State<DownloadPage> {
           ),
           if (!_isDownloading && _tempFile != null) // 다운로드가 완료되었을 때만 저장 버튼 활성화
             ElevatedButton(
-              onPressed: saveFile,
-              child: Text('저장소에 저장'),
+              onPressed: () {
+                promptFileName(_tempFile!);
+              },
+              child: Text('저장하기'),
             ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
