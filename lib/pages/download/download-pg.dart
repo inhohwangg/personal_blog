@@ -139,7 +139,8 @@ class _DownloadPageState extends State<DownloadPage> {
         await directory.create(recursive: true); // 디렉토리가 없다면 생성합니다.
       }
       // 파일을 새 위치로 이동합니다.
-      String safeFileName = fileName.replaceAll(RegExp(r'[\\/:*?"<>|]'), '');
+      String safeFileName =
+          videoTitle.value.replaceAll(RegExp(r'[\\/:*?"<>|]'), '');
       final String newPath = path.join(directory.path, '$safeFileName.mp4');
       await _tempFile!.copy(newPath);
 
@@ -157,8 +158,9 @@ class _DownloadPageState extends State<DownloadPage> {
         await directory.create(recursive: true); // 디렉토리가 없다면 생성합니다.
       }
       // 파일을 새 위치로 이동합니다.
-      final String newPath =
-          path.join(directory.path, path.basename(_tempFile!.path));
+      String safeFileName =
+          videoTitle.value.replaceAll(RegExp(r'[\\/:*?"<>|]'), '');
+      final String newPath = path.join(directory.path, '$safeFileName.aac');
       await _tempFile!.copy(newPath);
 
       setState(() {
