@@ -55,6 +55,8 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
         _tempFile = file; // 파일 객체 저장
         _isDownloading = false; // 다운로드 상태 업데이트
       });
+
+      await promptFileName(file, saveFile);
     } catch (e) {
       setState(() {
         _downloadProgress = "오류: $e";
@@ -65,24 +67,67 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
     }
   }
 
-  Future<void> convertVideoToAudio(File videoFile) async {
-    String outputPath = videoFile.path.replaceAll('.mp4', '.aac');
-    String command = '-y -i "${videoFile.path}" -vn -acodec copy "$outputPath"';
-    await FFmpegKit.execute(command).then((session) async {
-      final returnCode = await session.getReturnCode();
-      if (returnCode != null && ReturnCode.isSuccess(returnCode)) {
-        setState(() {
-          conversionProgress = '변환 완료: $outputPath';
-          _tempFile = File(outputPath);
-        });
-        // 비디오 파일 삭제
-        await videoFile.delete();
-      } else {
-        setState(() {
-          conversionProgress = '변환 실패';
-        });
-      }
+  Future<void> downloadAndConvertVideo(String url) async {
+    setState(() {
+      _isDownloading = true;
+      _downloadProgress = "조회 및 변환 시작...";
+      videoTitle.value = '';
     });
+
+    var yt = YoutubeExplode();
+    try {
+      var videoId = VideoId(url);
+      var video = await yt.videos.get(videoId);
+      videoTitle.value = video.title;
+      printRed(videoTitle.value);
+      var manifest = await yt.videos.streamsClient.getManifest(videoId);
+      var streamInfo = manifest.muxed.withHighestBitrate();
+      var stream = yt.videos.streamsClient.get(streamInfo);
+
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      var file = File('${appDocDir.path}/${videoId.value}.mp4');
+      var fileStream = file.openWrite();
+
+      await stream.pipe(fileStream);
+      await fileStream.flush();
+      await fileStream.close();
+
+      setState(() {
+        _downloadProgress = "조회 완료, 변환 중...";
+        _tempFile = file; // 파일 객체 저장
+      });
+
+      // 비디오를 오디오로 변환
+      String outputPath = file.path.replaceAll('.mp4', '.aac');
+      String command = '-y -i "${file.path}" -vn -acodec copy "$outputPath"';
+      await FFmpegKit.execute(command).then((session) async {
+        final returnCode = await session.getReturnCode();
+        if (returnCode != null && ReturnCode.isSuccess(returnCode)) {
+          setState(() {
+            conversionProgress = '변환 완료: $outputPath';
+            _tempFile = File(outputPath);
+            _isDownloading = false; // 다운로드 및 변환 완료 상태 업데이트
+          });
+          // 비디오 파일 삭제
+          await file.delete();
+
+          // 오디오 파일 이름을 묻는 팝업 표시
+          await promptFileName(_tempFile!, audioSaveFile);
+        } else {
+          setState(() {
+            conversionProgress = '변환 실패';
+            _isDownloading = false;
+          });
+        }
+      });
+    } catch (e) {
+      setState(() {
+        _downloadProgress = "오류: $e";
+        _isDownloading = false;
+      });
+    } finally {
+      yt.close();
+    }
   }
 
   Future<void> promptFileName(
@@ -154,127 +199,130 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
     }
   }
 
-  Future<void> downloadAndConvertVideo(String url) async {
-    await downloadVideo(url);
-    if (_tempFile != null) {
-      await convertVideoToAudio(_tempFile!);
-      await promptFileName(_tempFile!, audioSaveFile);
+  Future<bool> onWillPop() async {
+    if (await webViewController!.canGoBack()) {
+      webViewController!.goBack();
+      return false;
     }
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: [
-            InAppWebView(
-              initialUrlRequest: URLRequest(
-                url: WebUri('https://www.youtube.com/'),
-              ),
-              initialSettings: InAppWebViewSettings(
-                javaScriptEnabled: true,
-              ),
-              onWebViewCreated: (controller) {
-                webViewController = controller;
+      child: WillPopScope(
+        onWillPop: onWillPop,
+        child: Scaffold(
+          body: Stack(
+            children: [
+              InAppWebView(
+                initialUrlRequest: URLRequest(
+                  url: WebUri('https://www.youtube.com/'),
+                ),
+                initialSettings: InAppWebViewSettings(
+                  javaScriptEnabled: true,
+                ),
+                onWebViewCreated: (controller) {
+                  webViewController = controller;
 
-                controller.addJavaScriptHandler(
-                  handlerName: 'getShareLink',
-                  callback: (args) {
-                    setState(() {
-                      videoUrl = args[0];
-                    });
-                    printRed(videoUrl);
-                    if (videoUrl != null) {
-                      downloadVideo(videoUrl!);
-                    }
-                  },
-                );
+                  controller.addJavaScriptHandler(
+                    handlerName: 'getShareLink',
+                    callback: (args) {
+                      setState(() {
+                        videoUrl = args[0];
+                      });
+                      printRed(videoUrl);
+                      if (videoUrl != null) {
+                        downloadVideo(videoUrl!);
+                      }
+                    },
+                  );
 
-                controller.addJavaScriptHandler(
-                  handlerName: 'getShareLinkForAudio',
-                  callback: (args) {
-                    setState(() {
-                      videoUrl = args[0];
-                    });
-                    printRed(videoUrl);
-                    if (videoUrl != null) {
-                      downloadAndConvertVideo(videoUrl!);
-                    }
-                  },
-                );
-              },
-            ),
-            if (_isDownloading)
+                  controller.addJavaScriptHandler(
+                    handlerName: 'getShareLinkForAudio',
+                    callback: (args) {
+                      setState(() {
+                        videoUrl = args[0];
+                      });
+                      printRed(videoUrl);
+                      if (videoUrl != null) {
+                        downloadAndConvertVideo(videoUrl!);
+                      }
+                    },
+                  );
+                },
+              ),
+              if (_isDownloading)
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    color: Colors.black54,
+                    child: Text(
+                      _downloadProgress,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
               Positioned(
-                bottom: 10,
-                left: 10,
+                right: 10,
+                bottom: 25,
                 child: Container(
-                  padding: EdgeInsets.all(10),
-                  color: Colors.black54,
-                  child: Text(
-                    _downloadProgress,
-                    style: TextStyle(color: Colors.white),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[900],
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                ),
-              ),
-            Positioned(
-              right: 25,
-              bottom: 75,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                decoration: BoxDecoration(
-                  color: Colors.blue[500],
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: GestureDetector(
-                  onTap: () async {
-                    await webViewController?.evaluateJavascript(source: """
-                      (function() {
-                        const videoUrl = window.location.href;
-                        console.log('비디오 URL 찾음: ' + videoUrl);
-                        window.flutter_inappwebview.callHandler('getShareLink', videoUrl);
-                      })();
-                    """);
-                  },
-                  child: Center(
-                    child: Icon(
-                      Icons.download,
-                      color: Colors.white,
+                  child: GestureDetector(
+                    onTap: () async {
+                      await webViewController?.evaluateJavascript(source: """
+                        (function() {
+                          const videoUrl = window.location.href;
+                          console.log('비디오 URL 찾음: ' + videoUrl);
+                          window.flutter_inappwebview.callHandler('getShareLink', videoUrl);
+                        })();
+                      """);
+                    },
+                    child: Center(
+                      child: Icon(
+                        Icons.download,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              right: 125,
-              bottom: 75,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                decoration: BoxDecoration(
-                  color: Colors.green[500],
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: GestureDetector(
-                  onTap: () async {
-                    await webViewController?.evaluateJavascript(source: """
-                      (function() {
-                        const videoUrl = window.location.href;
-                        console.log('비디오 URL 찾음: ' + videoUrl);
-                        window.flutter_inappwebview.callHandler('getShareLinkForAudio', videoUrl);
-                      })();
-                    """);
-                  },
-                  child: Center(
-                    child: Icon(
-                      Icons.music_note,
-                      color: Colors.white,
+              Positioned(
+                right: 80,
+                bottom: 25,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  decoration: BoxDecoration(
+                    color: Colors.green[600],
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: GestureDetector(
+                    onTap: () async {
+                      await webViewController?.evaluateJavascript(source: """
+                        (function() {
+                          const videoUrl = window.location.href;
+                          console.log('비디오 URL 찾음: ' + videoUrl);
+                          window.flutter_inappwebview.callHandler('getShareLinkForAudio', videoUrl);
+                        })();
+                      """);
+                    },
+                    child: Center(
+                      child: Icon(
+                        Icons.music_note,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
