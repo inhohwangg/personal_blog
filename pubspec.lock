@@ -440,6 +440,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.1"
+  perfect_freehand:
+    dependency: transitive
+    description:
+      name: perfect_freehand
+      sha256: "6ced289209b3b26dc23c8d21960ceff3d39442cebd8e12ce722c4385c63553e5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2"
   permission_handler:
     dependency: "direct main"
     description:
@@ -536,6 +544,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  scribble:
+    dependency: "direct main"
+    description:
+      name: scribble
+      sha256: bcaffadf6d7a04ee2880f8043351c819f18d339892cd9ea4b8c32423d165d19c
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.0+1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -757,6 +773,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.3.3"
+  value_notifier_tools:
+    dependency: transitive
+    description:
+      name: value_notifier_tools
+      sha256: "504f1367a4d4cc55498335950e8c4a131692befbcc413b1bc0f92f6743b710a7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   vector_math:
     dependency: transitive
     description:
