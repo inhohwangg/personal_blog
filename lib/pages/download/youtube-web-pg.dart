@@ -565,7 +565,7 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
         await directory.create(recursive: true);
       }
       String safeFileName = fileName.replaceAll(RegExp(r'[\\/:*?"<>|]'), '');
-      final String newPath = path.join(directory.path, '$safeFileName.aac');
+      final String newPath = path.join(directory.path, '$safeFileName.mp3');
       await _tempFile!.copy(newPath);
 
       setState(() {

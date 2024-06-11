@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:personal_blog/pages/paint/paint-pg.dart';
+import 'package:personal_blog/pages/download/download-pg.dart';
+import 'package:personal_blog/pages/download/youtube-web-pg.dart';
+import 'package:personal_blog/pages/paint/paint-dashboard-pg.dart';
 
 class NoCheckCertificateHttpOverrides extends HttpOverrides {
   @override
@@ -25,7 +27,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       // home: LoginPageTestPage(),
-      home: NoteListPage(),
+      // home: NoteListPage(),
+      home: WebViewDownPage(),
     );
   }
 }

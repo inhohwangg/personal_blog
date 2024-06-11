@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:personal_blog/controller/paint/paint-pg-ctl.dart';
 import 'package:personal_blog/global/g_print.dart';
+import 'package:personal_blog/pages/paint/paint-draw-pg.dart';
 import 'package:scribble/scribble.dart';
 
 // // class PaintPage extends GetView<PaintPageController> {
@@ -330,117 +332,42 @@ class _NoteListPageState extends State<NoteListPage> {
           ),
         ],
       ),
-      body: ListView.builder(
+      body: GridView.builder(
+        padding: EdgeInsets.all(10),
         itemCount: files.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(files[index]),
-            onTap: () => _openNote(files[index]),
+          return GestureDetector(
+            onTap: () {
+              _openNote(files[index]);
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center, // 수직 정렬 조정
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.brown[300],
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    files[index].split('Download/').last.toString(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
+              ),
+            ),
           );
         },
-      ),
-    );
-  }
-}
-
-class ScribblePage extends StatefulWidget {
-  final String? existingFilePath;
-
-  ScribblePage({super.key, this.existingFilePath});
-
-  @override
-  _ScribblePageState createState() => _ScribblePageState();
-}
-
-class _ScribblePageState extends State<ScribblePage> {
-  late ScribbleNotifier notifier;
-  bool _isEraserMode = false;
-  String? filePath;
-
-  @override
-  void initState() {
-    super.initState();
-    notifier = ScribbleNotifier();
-    if (widget.existingFilePath != null) {
-      _loadExistingNote();
-    }
-    notifier.addListener(_saveAutomatically);
-  }
-
-  @override
-  void dispose() {
-    notifier.removeListener(_saveAutomatically);
-    notifier.dispose();
-    super.dispose();
-  }
-
-  Future<void> _loadExistingNote() async {
-    final file = File(widget.existingFilePath!);
-    if (await file.exists()) {
-      // 이미지를 로드하고 ScribbleNotifier로 설정하는 로직을 여기에 추가합니다.
-    }
-  }
-
-  void _saveAutomatically() async {
-    final directory = Directory('/storage/emulated/0/Download');
-
-    // 경로에 폴더가 없으면 생성
-    if (!await directory.exists()) {
-      await directory.create(recursive: true);
-    }
-
-    filePath ??= widget.existingFilePath ??
-        '${directory.path}/scribble_${DateTime.now().millisecondsSinceEpoch}.png';
-
-    print('자동 저장 경로: $filePath'); // 디버그 로그 추가
-
-    final imageBytes = await notifier.renderImage();
-    final file = File(filePath!);
-    await file.writeAsBytes(imageBytes.buffer.asUint8List());
-    print('자동 저장 성공'); // 디버그 로그 추가
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('메모 작성'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.create),
-            onPressed: () {
-              setState(() {
-                _isEraserMode = false;
-                notifier.setColor(Colors.black);
-                notifier.setStrokeWidth(2.0);
-              });
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.cleaning_services),
-            onPressed: () {
-              setState(() {
-                _isEraserMode = !_isEraserMode;
-                if (_isEraserMode) {
-                  notifier.setEraser();
-                  notifier.setStrokeWidth(10.0);
-                } else {
-                  notifier.setColor(Colors.black);
-                  notifier.setStrokeWidth(2.0);
-                }
-              });
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.undo),
-            onPressed: () {
-              notifier.undo();
-            },
-          ),
-        ],
-      ),
-      body: Scribble(
-        notifier: notifier,
+        gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       ),
     );
   }
