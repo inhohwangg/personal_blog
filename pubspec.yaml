@@ -29,8 +29,8 @@ dependencies:
   webview_flutter: ^4.7.0
   flutter_inappwebview: ^6.0.0
   url_launcher: ^6.2.6
-  media_scanner: ^2.1.0
   gap: ^3.0.1
+  media_scanner: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -47,23 +47,23 @@ flutter:
     - assets/images/
 
 fonts:
-- family: Pretendard
-  fonts:
-  - asset: assets/fonts/Pretendard-Thin.ttf
-    weight: 100
-  - asset: assets/fonts/Pretendard-ExtraLight.ttf
-    weight: 200
-  - asset: assets/fonts/Pretendard-Light.ttf
-    weight: 300
-  - asset: assets/fonts/Pretendard-Regular.ttf
-    weight: 400
-  - asset: assets/fonts/Pretendard-Medium.ttf
-    weight: 500
-  - asset: assets/fonts/Pretendard-SemiBold.ttf
-    weight: 600
-  - asset: assets/fonts/Pretendard-Bold.ttf
-    weight: 700
-  - asset: assets/fonts/Pretendard-ExtraBold.ttf
-    weight: 800
-  - asset: assets/fonts/Pretendard-Black.ttf
-    weight: 900
+  - family: Pretendard
+    fonts:
+      - asset: assets/fonts/Pretendard-Thin.ttf
+        weight: 100
+      - asset: assets/fonts/Pretendard-ExtraLight.ttf
+        weight: 200
+      - asset: assets/fonts/Pretendard-Light.ttf
+        weight: 300
+      - asset: assets/fonts/Pretendard-Regular.ttf
+        weight: 400
+      - asset: assets/fonts/Pretendard-Medium.ttf
+        weight: 500
+      - asset: assets/fonts/Pretendard-SemiBold.ttf
+        weight: 600
+      - asset: assets/fonts/Pretendard-Bold.ttf
+        weight: 700
+      - asset: assets/fonts/Pretendard-ExtraBold.ttf
+        weight: 800
+      - asset: assets/fonts/Pretendard-Black.ttf
+        weight: 900
