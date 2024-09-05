@@ -18,8 +18,8 @@ class AhomePage extends StatefulWidget {
 }
 
 class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
-  List<AnimationController> _animationControllers = [];
-  List<Animation<double>> _animations = [];
+  final List<AnimationController> _animationControllers = [];
+  final List<Animation<double>> _animations = [];
 
   AhomePageController controller = Get.put(AhomePageController());
 
@@ -857,7 +857,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
               ],
             ),
           ),
-          Container(
+          SizedBox(
             width: double.infinity,
             height: 250,
             child: Column(
@@ -946,7 +946,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                   children: List<Widget>.generate(controller.category.length,
                       (int index) {
                     return RawChip(
-                      label: Container(
+                      label: SizedBox(
                         width: 50,
                         child: Text(
                           controller.category[index],
@@ -1041,7 +1041,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(5),
                           child: AspectRatio(
-                            aspectRatio: 1.5/1,
+                            aspectRatio: 1.5 / 1,
                             child: Image.asset(
                               'assets/images/farm_info2.png',
                               fit: BoxFit.cover,
@@ -1052,7 +1052,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(5),
                           child: AspectRatio(
-                            aspectRatio: 1.5/1,
+                            aspectRatio: 1.5 / 1,
                             child: Image.asset(
                               'assets/images/product_info6.jpg',
                               fit: BoxFit.cover,
@@ -1076,40 +1076,40 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
               ),
             ),
             Container(
-            width: double.infinity,
-            height: 200,
-            color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Image.asset(
-                    'assets/images/apple_image.png',
-                    width: 100,
-                    height: 100,
+              width: double.infinity,
+              height: 200,
+              color: Colors.white,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Image.asset(
+                      'assets/images/apple_image.png',
+                      width: 100,
+                      height: 100,
+                    ),
                   ),
-                ),
-                Gap(10),
-                Text(
-                  '회사명:애플 하이랜드 / 대표자: 박현수',
-                  style: TextStyle(fontSize: 11, color: Color(0xFF646464)),
-                ),
-                Text(
-                  '주소: 강원도 양구군 해안면 만대리 2397 / 대표전화: 010-3522-6848',
-                  style: TextStyle(fontSize: 11, color: Color(0xFF646464)),
-                ),
-                Text(
-                  '사업자등록번호: 369-95-01729',
-                  style: TextStyle(fontSize: 11, color: Color(0xFF646464)),
-                ),
-                Text(
-                  'Copyright 애플하이랜드. All Rights Reserved.',
-                  style: TextStyle(fontSize: 11, color: Color(0xFF646464)),
-                ),
-              ],
+                  Gap(10),
+                  Text(
+                    '회사명:애플 하이랜드 / 대표자: 박현수',
+                    style: TextStyle(fontSize: 11, color: Color(0xFF646464)),
+                  ),
+                  Text(
+                    '주소: 강원도 양구군 해안면 만대리 2397 / 대표전화: 010-3522-6848',
+                    style: TextStyle(fontSize: 11, color: Color(0xFF646464)),
+                  ),
+                  Text(
+                    '사업자등록번호: 369-95-01729',
+                    style: TextStyle(fontSize: 11, color: Color(0xFF646464)),
+                  ),
+                  Text(
+                    'Copyright 애플하이랜드. All Rights Reserved.',
+                    style: TextStyle(fontSize: 11, color: Color(0xFF646464)),
+                  ),
+                ],
+              ),
             ),
-          ),
           ],
         ),
       ),
@@ -1117,10 +1117,159 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
   }
 
   appleDirections() {
+    // return Container(
+    //   decoration: BoxDecoration(
+    //     color: Colors.white,
+    //   ),
+    //   width: double.infinity,
+    //   height: MediaQuery.of(context).size.height * 0.45,
+    //   child: Stack(
+    //     children: [
+    //       // 배경 이미지와 그라데이션을 위한 Stack 사용
+    //       Container(
+    //         width: double.infinity,
+    //         height: MediaQuery.of(context).size.height * 0.45,
+    //         decoration: BoxDecoration(
+    //           image: DecorationImage(
+    //             image: AssetImage('assets/images/apple_direction_bg.jpg'),
+    //             opacity: 0.35,
+    //             fit: BoxFit.cover,
+    //           ),
+    //         ),
+    //       ),
+    //       // 이미지 위에 그라데이션 효과 추가
+    //       Container(
+    //         width: double.infinity,
+    //         height: MediaQuery.of(context).size.height * 0.45,
+    //         decoration: BoxDecoration(
+    //           gradient: LinearGradient(
+    //             begin: Alignment.center,
+    //             end: Alignment.bottomCenter,
+    //             colors: [
+    //               Colors.white.withOpacity(0.2),
+    //               Colors.white.withOpacity(0.9), // 하단으로 갈수록 흐릿하게
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //       // 텍스트와 이미지 내용들
+    //       Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: [
+    //           Text('부지런한 농부가 있는',
+    //               style: TextStyle(fontSize: 12, color: Color(0xFF4D2E1C))),
+    //           Text('「 애플 하이랜드 」 이야기',
+    //               style: TextStyle(fontSize: 16, color: Color(0xFF30180B))),
+    //           Gap(40),
+    //           SizedBox(
+    //             width: double.infinity,
+    //             height: MediaQuery.of(context).size.height * 0.15,
+    //             child: Row(
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               children: [
+    //                 ClipRRect(
+    //                   borderRadius: BorderRadius.circular(5),
+    //                   child: Image.asset(
+    //                     'assets/images/apple_direction1.jpg',
+    //                     fit: BoxFit.cover,
+    //                     width: MediaQuery.of(context).size.width * 0.5,
+    //                     height: MediaQuery.of(context).size.height * 0.15,
+    //                   ),
+    //                 ),
+    //                 Gap(20),
+    //                 ClipRRect(
+    //                   borderRadius: BorderRadius.circular(5),
+    //                   child: Image.asset(
+    //                     'assets/images/apple_direction2.jpg',
+    //                     fit: BoxFit.cover,
+    //                     width: MediaQuery.of(context).size.width * 0.25,
+    //                     height: MediaQuery.of(context).size.height * 0.15,
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
+    //           Gap(20),
+    //           Text('최고의 사과농원을 위해',
+    //               style: TextStyle(fontSize: 14, color: Color(0xFF4D2E1C))),
+    //           Gap(10),
+    //           Text('품질 좋은 사과를 생산하기 위해 경북 영천에서',
+    //               style: TextStyle(fontSize: 12, color: Color(0xFF4D2E1C))),
+    //           Text('강원도 양구 펀치볼로 이주해 사과농원을 만들었습니다.',
+    //               style: TextStyle(fontSize: 12, color: Color(0xFF4D2E1C))),
+    //           Text('오직 사과만을 생각하며, 사과가 잘 자랄 수 있도록 늘 노력합니다.',
+    //               style: TextStyle(fontSize: 12, color: Color(0xFF4D2E1C))),
+    //         ],
+    //       ),
+    //     ],
+    //   ),
+    // );
     return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/apple_direction_bg.jpg'),
+          opacity: 0.35,
+          fit: BoxFit.cover,
+        ),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.white.withOpacity(0.2),
+            Colors.white.withOpacity(0.9), // 하단으로 갈수록 흐릿하게
+          ],
+        ),
+      ),
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.45,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          
+          Text('부지런한 농부가 있는',
+              style: TextStyle(fontSize: 12, color: Color(0xFF4D2E1C))),
+          Text('「 애플 하이랜드 」 이야기',
+              style: TextStyle(fontSize: 16, color: Color(0xFF30180B))),
+          Gap(40),
+          SizedBox(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.15,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image.asset(
+                    'assets/images/apple_direction1.jpg',
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: MediaQuery.of(context).size.height * 0.15,
+                  ),
+                ),
+                Gap(20),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image.asset(
+                    'assets/images/apple_direction2.jpg',
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    height: MediaQuery.of(context).size.height * 0.15,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Gap(20),
+          Text('최고의 사과농원을 위해',
+              style: TextStyle(fontSize: 14, color: Color(0xFF4D2E1C))),
+          Gap(10),
+          Text('품질 좋은 사과를 생산하기 위해 경북 영천에서',
+              style: TextStyle(fontSize: 12, color: Color(0xFF4D2E1C))),
+          Text('강원도 양구 펀치볼로 이주해 사과농원을 만들었습니다.',
+              style: TextStyle(fontSize: 12, color: Color(0xFF4D2E1C))),
+          Text('오직 사과만을 생각하며, 사과가 잘 자랄 수 있도록 늘 노력합니다.',
+              style: TextStyle(fontSize: 12, color: Color(0xFF4D2E1C))),
         ],
       ),
     );
