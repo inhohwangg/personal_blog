@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:personal_blog/global/g_dio.dart';
 import 'package:personal_blog/pages/shop/a-home-page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'a-register-page.dart';
 
@@ -141,6 +145,7 @@ class AloginPage extends GetView {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
+                              surfaceTintColor: Colors.white,
                               shape: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide.none),
@@ -327,17 +332,23 @@ class AloginPage extends GetView {
                       ),
                       Gap(10),
                       Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Color(0xFFFEE500),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Center(
-                            child: Text(
-                              '카카오',
-                              style: TextStyle(
-                                  color: Color(0xFF191919), fontSize: 14),
+                        child: GestureDetector(
+                          onTap: () async{
+                            launchUrl(Uri.parse('https://api.inhodev.shop/auth/kakao'));
+                            
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color(0xFFFEE500),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Center(
+                              child: Text(
+                                '카카오',
+                                style: TextStyle(
+                                    color: Color(0xFF191919), fontSize: 14),
+                              ),
                             ),
                           ),
                         ),

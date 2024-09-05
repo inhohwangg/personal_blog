@@ -593,6 +593,7 @@ class Aregister extends GetView {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
+                            surfaceTintColor: Colors.white,
                             shape: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide.none),
