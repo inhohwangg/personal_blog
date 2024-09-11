@@ -11,6 +11,7 @@ import 'package:personal_blog/pages/shop/a-info.dart';
 import 'package:personal_blog/pages/shop/a-price.dart';
 
 import '../../controller/shop/a-home-page-controller.dart';
+import 'a-comunity.dart';
 
 class AhomePage extends StatefulWidget {
   const AhomePage({super.key});
@@ -54,6 +55,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
         }
       }
       controller.bottomIndex.value = index;
+      controller.tabIndex.value = index + 4;
     });
   }
 
@@ -104,7 +106,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
+                              horizontal: 10, vertical: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -160,7 +162,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                           applePrice()
                         else if (controller.tabIndex.value == 3)
                           appleDirections()
-                        else if (controller.tabIndex.value == 4)
+                        else if (controller.tabIndex.value == 6)
                           comunity()
                       ],
                     )),
@@ -169,11 +171,12 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
           ),
         ),
         bottomNavigationBar: Obx(() => NavigationBarTheme(
-            data: NavigationBarThemeData(),
+            data: NavigationBarThemeData(backgroundColor: Color(0xFFFCFCFC)),
             child: NavigationBar(
               selectedIndex: controller.bottomIndex.value,
               onDestinationSelected: (value) {
                 onItemTapped(value);
+                controller.bottomIndex.value = value;
               },
               destinations: [
                 NavigationDestination(
@@ -224,20 +227,14 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                         : Icons.feed_outlined),
                   ),
                   label: "커뮤니티",
-                  selectedIcon: GestureDetector(
-                    onTap: () {
-                      controller.tabIndex.value = 4;
-                      printRed(controller.tabIndex.value);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Icon(
-                        controller.bottomIndex.value == 2
-                            ? Icons.feed
-                            : Icons.feed_outlined,
-                      ),
+                  selectedIcon: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Icon(
+                      controller.bottomIndex.value == 2
+                          ? Icons.feed
+                          : Icons.feed_outlined,
                     ),
                   ),
                 ),
@@ -265,56 +262,4 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
       ),
     );
   }
-
-  comunity() {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('커뮤니티'),
-          Gap(10),
-          Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: List<Widget>.generate(controller.comunityCategory.length,
-                      (int index) {
-                    return RawChip(
-                      label: SizedBox(
-                        width: 50,
-                        child: Text(
-                          controller.comunityCategory[index],
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      selected: controller.selectedCategoryIndex.value == index,
-                      onSelected: (bool selected) {
-                          controller.selectedCategoryIndex.value =
-                              selected ? index : 0;
-                      },
-                      selectedColor: Color(0xFF8B5E3C), // 선택된 상태의 색상
-                      backgroundColor: Colors.white, // 기본 배경색
-                      labelStyle: TextStyle(
-                          color: controller.selectedCategoryIndex.value == index
-                              ? Colors.white
-                              : Color(0xFF8B5E3C)), // 선택 여부에 따른 텍스트 색상
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        side: BorderSide(
-                          color: controller.selectedCategoryIndex.value == index
-                              ? Color(0xFF8B5E3C)
-                              : Color(0xFFD9D9D9),
-                        ),
-                      ),
-                      showCheckmark: false,
-                    );
-                  }),
-                )
-        ],
-      ),
-    );
-  }  
-
-  
-
-  
 }
