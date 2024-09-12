@@ -13,7 +13,7 @@ comunity() {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: 100,
+          height: 75,
           child: Center(
             child: Text(
               '커뮤니티',
@@ -24,7 +24,6 @@ comunity() {
             ),
           ),
         ),
-        Gap(10),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List<Widget>.generate(controller.comunityCategory.length,
@@ -59,7 +58,7 @@ comunity() {
             );
           }),
         ),
-        Gap(30),
+        Gap(20),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           color: Colors.white,
@@ -89,18 +88,122 @@ comunity() {
               ),
               Spacer(),
               Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Color(0xFFD9D9D9)),
                     borderRadius: BorderRadius.circular(5)),
-                child: Row(
-                  children: [
-                    Text('전체보기'),
-                  ],
+                child: DropdownButton(
+                  items: controller.dropDownMenuList
+                      .map((item) => DropdownMenuItem(
+                            value: item,
+                            child: Text(item),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    controller.dropDownValue.value = value.toString();
+                  },
+                  icon: Padding(
+                    padding: EdgeInsets.only(left: 10), // 아이콘과 텍스트 사이 간격 조정
+                    child: Icon(Icons.keyboard_arrow_down),
+                  ),
+                  value: controller.dropDownValue.value,
+                  underline: Container(
+                    color: Colors.transparent,
+                  ),
+                  isDense: true,
+                  padding: EdgeInsets.symmetric(vertical: 10),
                 ),
-              )
+              ),
             ],
           ),
-        )
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          child: Container(
+            width: double.infinity,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Color(0xFFF5F5F5),
+              border: Border.symmetric(
+                  horizontal: BorderSide(width: 1, color: Color(0xFFD9D9D9))),
+              // border: Border(
+              //     top: BorderSide(width: 1, color: Color(0xFFF5F5F5),),
+              //     bottom: BorderSide(width: 1, color: Color(0xFFF5F5F5))),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 8,
+                  child: Center(
+                      child: Text(
+                    '제목',
+                    style: TextStyle(fontSize: 12, color: Color(0xFF343434)),
+                  )),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Center(
+                      child: Text('등록일',
+                          style: TextStyle(
+                              fontSize: 12, color: Color(0xFF343434)))),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: MediaQuery.of(Get.context!).size.height * 0.5,
+          child: ListView.builder(
+            itemCount: controller.itemsPerPage.value,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(width: 1, color: Color(0xFFD9D9D9))),
+                  ),
+                  width: double.infinity,
+                  height: 50,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 8,
+                        child: Text(
+                          controller.eventList[index]['title'],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          controller.eventList[index]['date'],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.arrow_back_ios),
+            Gap(15),
+            Text('1'),
+            Gap(15),
+            Text('2'),
+            Gap(15),
+            Text('3'),
+            Gap(15),
+            Icon(Icons.arrow_forward_ios),
+          ],
+        ),
+        Gap(50)
       ],
     ),
   );
