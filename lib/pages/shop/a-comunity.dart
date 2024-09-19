@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -449,6 +450,27 @@ helpCenter() {
             ),
           ),
         ),
+        Container(
+          width: double.infinity,
+          height: MediaQuery.of(Get.context!).size.height * 0.5,
+          child: ListView.builder(
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 5,vertical: 10),
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(width: 1,color: Color(0xFFD9D9D9).withOpacity(0.5)))
+                ),
+                child: Row(
+                  children: [
+                    Text('Q', style: TextStyle(fontSize: 18,color: Color(0xFF343434),fontWeight: FontWeight.w500),),
+                    Gap(10),
+                    Text('[배송문의] 오늘 주문하면 얼마나 걸리나요?', style: TextStyle(fontSize: 12,color: Color(0xFF343434)))
+                  ],
+                ),
+              );
+          },),
+        )
       ],
     ),
   );
