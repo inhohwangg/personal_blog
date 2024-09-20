@@ -51,6 +51,34 @@ class AhomePageController extends GetxController {
     {'title': '[이벤트] 당첨자 명단 확인3', 'date': '24.09.06'},
   ].obs;
 
+  RxList eventTestList = [
+    {'title': '[이벤트] ', 'date': '24.09.03'},
+    {'title': '[이벤트] ', 'date': '24.09.03'},
+    {'title': '[이벤트] ', 'date': '24.09.03'},
+    {'title': '[이벤트] ', 'date': '24.09.03'},
+    {'title': '[이벤트] ', 'date': '24.09.03'},
+    {'title': '[이벤트] ', 'date': '24.09.03'},
+    {'title': '[이벤트] ', 'date': '24.09.04'},
+    {'title': '[이벤트] ', 'date': '24.09.04'},
+    {'title': '[이벤트] ', 'date': '24.09.04'},
+    {'title': '[이벤트] ', 'date': '24.09.04'},
+    {'title': '[이벤트] ', 'date': '24.09.04'},
+    {'title': '[이벤트] ', 'date': '24.09.04'},
+    {'title': '[이벤트] ', 'date': '24.09.05'},
+    {'title': '[이벤트] ', 'date': '24.09.05'},
+    {'title': '[이벤트] ', 'date': '24.09.05'},
+    {'title': '[이벤트] ', 'date': '24.09.05'},
+    {'title': '[이벤트] ', 'date': '24.09.05'},
+  ].obs;
+
+  RxList faqs = [
+    {'faqTitle':'[배송문의]','title': '애플 하이랜드에서 오늘 주문하면 얼마나 걸리나요?','content': '평일 기준으로 최대 1 ~ 3일 , 최소 1 ~ 2일 정도 소요됩니다.','isExpanded': false.obs},
+    {'faqTitle':'[자주 묻는 질문]','title': '사과는 어떻게 보관해야 하나요?','content': '사과는 서늘하고 건조한 곳에 보관하는 것이 좋습니다. 냉장고에 보관하면 신선도를 오래 유지할 수 있습니다.','isExpanded': false.obs},
+    {'faqTitle':'[반품 / 교환문의]','title': '반품 및 환불 정책은 어떻게 되나요?','content': '상품 수령 후 7일 이내에 반품 요청이 가능합니다. 단! 사과의 상태가 양호할 경우 전액 환불이 가능합니다.','isExpanded': false.obs},
+    {'faqTitle':'[상품문의]','title': '사과의 종류는 어떤 것이 있나요?','content': '애플 하이랜드에서는 다양한 사과를 판매하고있습니다. 감홍 , 시나골드 , 부사 , 아리수 , 홍로 ,사과즙 등이 있으며, 각 종류마다 맛과 특성이 다릅니다.','isExpanded': false.obs},
+    {'faqTitle':'[기타문의]','title': '사과의 영양성분은 어떤 것이 있나요?','content': '사과는 비타민 C , 식이섬유 , 항산화 물질이 풍부하여 건강에 매우 유익합니다.','isExpanded': false.obs},
+  ].obs;
+
   @override
   void onInit() {
     super.onInit();

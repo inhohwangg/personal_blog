@@ -33,28 +33,29 @@ comunity() {
                 (int index) {
               return RawChip(
                 label: SizedBox(
-                  width: 60,
+                  width: 50,
                   child: Text(
                     controller.comunityCategory[index],
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 12),
                   ),
                 ),
                 selected: controller.selectedCategoryIndex.value == index,
                 onSelected: (bool selected) {
                   controller.selectedCategoryIndex.value = selected ? index : 0;
                 },
-                selectedColor: Color(0xFF8B5E3C), // 선택된 상태의 색상
+                selectedColor: Color(0xFF856655), // 선택된 상태의 색상
                 backgroundColor: Colors.white, // 기본 배경색
                 labelStyle: TextStyle(
                     color: controller.selectedCategoryIndex.value == index
                         ? Colors.white
-                        : Color(0xFF8B5E3C)), // 선택 여부에 따른 텍스트 색상
+                        : Color(0xFF271300)), // 선택 여부에 따른 텍스트 색상
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                   side: BorderSide(
                     color: controller.selectedCategoryIndex.value == index
-                        ? Color(0xFF8B5E3C)
-                        : Color(0xFFD9D9D9),
+                        ? Color(0xFF856655)
+                        : Color(0xFFECECEC),
                   ),
                 ),
                 showCheckmark: false,
@@ -62,7 +63,7 @@ comunity() {
             }),
           ),
         ),
-        if (controller.selectedCategoryIndex.value == 0) notices(),
+        if (controller.selectedCategoryIndex.value == 0) notices(controller.eventTestList),
         if (controller.selectedCategoryIndex.value == 1) helpCenter(),
         Gap(20),
       ],
@@ -70,16 +71,16 @@ comunity() {
   );
 }
 
-notices() {
+notices(item) {
   // getPageItems 함수 정의
   List getPageItems() {
     int startIndex =
         (controller.currentPage.value - 1) * controller.itemsPerPage.value;
     int endIndex = startIndex + controller.itemsPerPage.value;
-    endIndex = endIndex > controller.eventList.length
-        ? controller.eventList.length
+    endIndex = endIndex > item.length
+        ? item.length
         : endIndex;
-    return controller.eventList.sublist(startIndex, endIndex);
+    return item.sublist(startIndex, endIndex);
   }
 
   return Container(
@@ -200,13 +201,11 @@ notices() {
                       Expanded(
                         flex: 8,
                         child: Text(item['title']
-                            // controller.eventList[index]['title'],
                             ),
                       ),
                       Expanded(
                         flex: 2,
                         child: Text(
-                            // controller.eventList[index]['date'],
                             item['date']),
                       ),
                     ],
@@ -367,7 +366,8 @@ helpCenter() {
                   color: Color(0xFFF9F9F9),
                 ),
                 child: Chip(
-                  avatar: Icon(Icons.autorenew_outlined, color: Color(0xFF646464)),
+                  avatar:
+                      Icon(Icons.autorenew_outlined, color: Color(0xFF646464)),
                   label: Text(
                     '반품 / 교환 문의',
                     style: TextStyle(color: Color(0xFF343434), fontSize: 12),
@@ -440,7 +440,11 @@ helpCenter() {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Color(0xFFAA9E9E).withOpacity(0.7),width: 1.5,)),
+            border: Border(
+                bottom: BorderSide(
+              color: Color(0xFFAA9E9E).withOpacity(0.7),
+              width: 1.5,
+            )),
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
@@ -452,24 +456,96 @@ helpCenter() {
         ),
         Container(
           width: double.infinity,
-          height: MediaQuery.of(Get.context!).size.height * 0.5,
+          height: MediaQuery.of(Get.context!).size.height * 0.4,
           child: ListView.builder(
-            itemCount: 5,
+            itemCount: controller.faqs.length,
             itemBuilder: (context, index) {
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 5,vertical: 10),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(width: 1,color: Color(0xFFD9D9D9).withOpacity(0.5)))
-                ),
-                child: Row(
-                  children: [
-                    Text('Q', style: TextStyle(fontSize: 18,color: Color(0xFF343434),fontWeight: FontWeight.w500),),
-                    Gap(10),
-                    Text('[배송문의] 오늘 주문하면 얼마나 걸리나요?', style: TextStyle(fontSize: 12,color: Color(0xFF343434)))
-                  ],
+              var faqItem = controller.faqs[index];
+              return GestureDetector(
+                onTap: () {
+                  faqItem['isExpanded'].value = !faqItem['isExpanded'].value;
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              width: 1,
+                              color: Color(0xFFD9D9D9).withOpacity(0.5)))),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Q',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xFF343434),
+                                fontWeight: FontWeight.w500),
+                          ),
+                          Gap(10),
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.785,
+                            child: Text(
+                              '${controller.faqs[index]['faqTitle']} ${controller.faqs[index]['title']}',
+                              maxLines: 10,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xFF343434),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      Obx(
+                        () => AnimatedCrossFade(
+                          firstChild: Container(),
+                          secondChild: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Column(
+                              children: [
+                                Text(
+                                  faqItem['content'],
+                                  style: TextStyle(
+                                      fontSize: 12, color: Color(0xFF343434)),
+                                ),
+                                Gap(20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Color(0xFFF7F7F7)
+                                      ),
+                                      child: Text(
+                                        '접기',
+                                        style: TextStyle(fontSize: 12,color: Color(0xFF271300)),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          crossFadeState: faqItem['isExpanded'].value
+                              ? CrossFadeState.showSecond
+                              : CrossFadeState.showFirst,
+                          duration: Duration(
+                            milliseconds: 300,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               );
-          },),
+            },
+          ),
         )
       ],
     ),
