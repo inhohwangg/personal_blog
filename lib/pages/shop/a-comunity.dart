@@ -63,7 +63,8 @@ comunity() {
             }),
           ),
         ),
-        if (controller.selectedCategoryIndex.value == 0) notices(controller.eventTestList),
+        if (controller.selectedCategoryIndex.value == 0)
+          notices(controller.eventTestList),
         if (controller.selectedCategoryIndex.value == 1) helpCenter(),
         Gap(20),
       ],
@@ -77,9 +78,7 @@ notices(item) {
     int startIndex =
         (controller.currentPage.value - 1) * controller.itemsPerPage.value;
     int endIndex = startIndex + controller.itemsPerPage.value;
-    endIndex = endIndex > item.length
-        ? item.length
-        : endIndex;
+    endIndex = endIndex > item.length ? item.length : endIndex;
     return item.sublist(startIndex, endIndex);
   }
 
@@ -200,13 +199,11 @@ notices(item) {
                     children: [
                       Expanded(
                         flex: 8,
-                        child: Text(item['title']
-                            ),
+                        child: Text(item['title']),
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text(
-                            item['date']),
+                        child: Text(item['date']),
                       ),
                     ],
                   ),
@@ -454,7 +451,7 @@ helpCenter() {
             ),
           ),
         ),
-        Container(
+        SizedBox(
           width: double.infinity,
           height: MediaQuery.of(Get.context!).size.height * 0.4,
           child: ListView.builder(
@@ -485,7 +482,7 @@ helpCenter() {
                                 fontWeight: FontWeight.w500),
                           ),
                           Gap(10),
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width * 0.785,
                             child: Text(
                               '${controller.faqs[index]['faqTitle']} ${controller.faqs[index]['title']}',
@@ -517,14 +514,17 @@ helpCenter() {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 30, vertical: 10),
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Color(0xFFF7F7F7)
-                                      ),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: Color(0xFFF7F7F7)),
                                       child: Text(
                                         '접기',
-                                        style: TextStyle(fontSize: 12,color: Color(0xFF271300)),
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFF271300)),
                                       ),
                                     )
                                   ],

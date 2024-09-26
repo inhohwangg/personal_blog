@@ -1,17 +1,13 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dots_indicator/dots_indicator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:personal_blog/global/g_print.dart';
 import 'package:personal_blog/pages/shop/a-directions.dart';
 import 'package:personal_blog/pages/shop/a-info.dart';
 import 'package:personal_blog/pages/shop/a-price.dart';
 
 import '../../controller/shop/a-home-page-controller.dart';
 import 'a-comunity.dart';
+import 'a-mypage.dart';
 
 class AhomePage extends StatefulWidget {
   const AhomePage({super.key});
@@ -164,6 +160,10 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                           appleDirections()
                         else if (controller.tabIndex.value == 6)
                           comunity()
+                        else if (controller.tabIndex.value == 7)
+                          mypage()
+                        else if (controller.tabIndex.value == 8)
+                          privateData()
                       ],
                     )),
               ),

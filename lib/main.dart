@@ -5,6 +5,9 @@ import 'package:get/get.dart';
 import 'package:personal_blog/pages/shop/a-home-page.dart';
 import 'package:personal_blog/pages/shop/a-login-page.dart';
 
+import 'pages/download/download-pg.dart';
+import 'pages/download/youtube-web-pg.dart';
+
 class NoCheckCertificateHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -25,11 +28,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      // home: LoginPageTestPage(),
-      theme: ThemeData(fontFamily: 'Pretendard'),
-      themeMode: ThemeMode.system,
-      home: AloginPage(),
-    );
+        // home: LoginPageTestPage(),
+        theme: ThemeData(fontFamily: 'Pretendard'),
+        themeMode: ThemeMode.system,
+        // home: AloginPage(),
+        home: WebViewDownPage());
   }
 }
 

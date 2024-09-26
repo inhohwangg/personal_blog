@@ -78,6 +78,7 @@ class AhomePageController extends GetxController {
     {'faqTitle':'[상품문의]','title': '사과의 종류는 어떤 것이 있나요?','content': '애플 하이랜드에서는 다양한 사과를 판매하고있습니다. 감홍 , 시나골드 , 부사 , 아리수 , 홍로 ,사과즙 등이 있으며, 각 종류마다 맛과 특성이 다릅니다.','isExpanded': false.obs},
     {'faqTitle':'[기타문의]','title': '사과의 영양성분은 어떤 것이 있나요?','content': '사과는 비타민 C , 식이섬유 , 항산화 물질이 풍부하여 건강에 매우 유익합니다.','isExpanded': false.obs},
   ].obs;
+  RxBool isExpanded = false.obs;
 
   @override
   void onInit() {
