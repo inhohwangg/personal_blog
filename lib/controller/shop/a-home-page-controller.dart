@@ -24,6 +24,9 @@ class AhomePageController extends GetxController {
   RxInt totalPages = 1.obs; // 전체 페이지 수
   RxInt pageGroupSize = 3.obs; // 한번에 표시할 페이지 번호 수
   RxInt pageGroupStart = 1.obs; // 현재 페이지 그룹의 시작 페이지 번호
+  RxInt helpCenterIndex = 0.obs;
+  RxString helpCenterTitle = ''.obs;
+  RxBool secretValue = false.obs;
   RxList eventList = [
     {'title': '[이벤트] 당첨자 명단 확인', 'date': '24.09.03'},
     {'title': '[이벤트] 당첨자 명단 확인', 'date': '24.09.03'},
@@ -51,24 +54,51 @@ class AhomePageController extends GetxController {
     {'title': '[이벤트] 당첨자 명단 확인3', 'date': '24.09.06'},
   ].obs;
 
+  RxList qstList = [
+    {'title': '[배송문의] 당첨자 명단 확인','secret':true,'status': '답변완료', 'date': '24.09.03'},
+    {'title': '[배송문의] 당첨자 명단 확인', 'secret': true,'status': '답변완료','date': '24.09.03'},
+    {'title': '[배송문의] 당첨자 명단 확인', 'secret': false,'status': '답변대기','date': '24.09.03'},
+    {'title': '[배송문의] 당첨자 명단 확인', 'secret': false,'status': '답변대기','date': '24.09.03'},
+    {'title': '[배송문의] 당첨자 명단 확인', 'secret': false,'status': '답변대기','date': '24.09.03'},
+    {'title': '[배송문의] 당첨자 명단 확인', 'secret': false,'status': '답변대기','date': '24.09.03'},
+    {'title': '[배송문의] 당첨자 명단 확인1', 'secret': false,'status': '답변대기','date': '24.09.04'},
+    {'title': '[배송문의] 당첨자 명단 확인1', 'secret': false,'status': '답변대기','date': '24.09.04'},
+    {'title': '[배송문의] 당첨자 명단 확인1', 'secret': false,'status': '답변대기','date': '24.09.04'},
+    {'title': '[배송문의] 당첨자 명단 확인1', 'secret': false,'status': '답변대기','date': '24.09.04'},
+    {'title': '[배송문의] 당첨자 명단 확인1', 'secret': false,'status': '답변대기','date': '24.09.04'},
+    {'title': '[배송문의] 당첨자 명단 확인1', 'secret': false,'status': '답변대기','date': '24.09.04'},
+    {'title': '[배송문의] 당첨자 명단 확인2', 'secret': false,'status': '답변대기','date': '24.09.05'},
+    {'title': '[배송문의] 당첨자 명단 확인2', 'secret': false,'status': '답변대기','date': '24.09.05'},
+    {'title': '[배송문의] 당첨자 명단 확인2', 'secret': false,'status': '답변대기','date': '24.09.05'},
+    {'title': '[배송문의] 당첨자 명단 확인2', 'secret': false,'status': '답변대기','date': '24.09.05'},
+    {'title': '[배송문의] 당첨자 명단 확인2', 'secret': false,'status': '답변대기','date': '24.09.05'},
+    {'title': '[배송문의] 당첨자 명단 확인2', 'secret': false,'status': '답변대기','date': '24.09.05'},
+    {'title': '[배송문의] 당첨자 명단 확인3', 'secret': false,'status': '답변대기','date': '24.09.06'},
+    {'title': '[배송문의] 당첨자 명단 확인3', 'secret': false,'status': '답변대기','date': '24.09.06'},
+    {'title': '[배송문의] 당첨자 명단 확인3', 'secret': false,'status': '답변대기','date': '24.09.06'},
+    {'title': '[배송문의] 당첨자 명단 확인3', 'secret': false,'status': '답변대기','date': '24.09.06'},
+    {'title': '[배송문의] 당첨자 명단 확인3', 'secret': false,'status': '답변대기','date': '24.09.06'},
+    {'title': '[배송문의] 당첨자 명단 확인3', 'secret': false,'status': '답변대기','date': '24.09.06'},
+  ].obs;
+
   RxList eventTestList = [
-    {'title': '[이벤트] ', 'date': '24.09.03'},
-    {'title': '[이벤트] ', 'date': '24.09.03'},
-    {'title': '[이벤트] ', 'date': '24.09.03'},
-    {'title': '[이벤트] ', 'date': '24.09.03'},
-    {'title': '[이벤트] ', 'date': '24.09.03'},
-    {'title': '[이벤트] ', 'date': '24.09.03'},
-    {'title': '[이벤트] ', 'date': '24.09.04'},
-    {'title': '[이벤트] ', 'date': '24.09.04'},
-    {'title': '[이벤트] ', 'date': '24.09.04'},
-    {'title': '[이벤트] ', 'date': '24.09.04'},
-    {'title': '[이벤트] ', 'date': '24.09.04'},
-    {'title': '[이벤트] ', 'date': '24.09.04'},
-    {'title': '[이벤트] ', 'date': '24.09.05'},
-    {'title': '[이벤트] ', 'date': '24.09.05'},
-    {'title': '[이벤트] ', 'date': '24.09.05'},
-    {'title': '[이벤트] ', 'date': '24.09.05'},
-    {'title': '[이벤트] ', 'date': '24.09.05'},
+    {'title': '[이벤트] ', 'secret':true,'status': '답변완료','date': '24.09.03'},
+    {'title': '[이벤트] ', 'secret':true,'status': '답변완료','date': '24.09.03'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변완료','date': '24.09.03'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변완료','date': '24.09.03'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변완료','date': '24.09.03'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변완료','date': '24.09.03'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변대기','date': '24.09.04'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변대기','date': '24.09.04'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변대기','date': '24.09.04'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변대기','date': '24.09.04'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변완료','date': '24.09.04'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변완료','date': '24.09.04'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변완료','date': '24.09.05'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변완료','date': '24.09.05'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변완료','date': '24.09.05'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변완료','date': '24.09.05'},
+    {'title': '[이벤트] ', 'secret':false,'status': '답변완료','date': '24.09.05'},
   ].obs;
 
   RxList faqs = [

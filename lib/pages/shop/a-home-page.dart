@@ -111,7 +111,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                                   controller.tabIndex.value = 0;
                                 },
                                 child: Text(
-                                  '과수원 소개',
+                                  '브랜드 스토리',
                                   style: TextStyle(
                                       color: Color(0xFF30180B), fontSize: 15),
                                 ),
@@ -121,7 +121,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                                   controller.tabIndex.value = 1;
                                 },
                                 child: Text(
-                                  '사과',
+                                  '과일 소개',
                                   style: TextStyle(
                                       color: Color(0xFF30180B), fontSize: 15),
                                 ),
@@ -131,7 +131,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                                   controller.tabIndex.value = 2;
                                 },
                                 child: Text(
-                                  '사과즙',
+                                  '오시는 길',
                                   style: TextStyle(
                                       color: Color(0xFF30180B), fontSize: 15),
                                 ),
@@ -141,7 +141,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                                   controller.tabIndex.value = 3;
                                 },
                                 child: Text(
-                                  '오시는 길',
+                                  '과일 판매',
                                   style: TextStyle(
                                       color: Color(0xFF30180B), fontSize: 15),
                                 ),
@@ -171,9 +171,40 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
           ),
         ),
         bottomNavigationBar: Obx(() => NavigationBarTheme(
-            data: NavigationBarThemeData(backgroundColor: Color(0xFFFCFCFC)),
+            data: NavigationBarThemeData(
+              backgroundColor: Color(0xFFFCFCFC),
+              labelTextStyle: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return TextStyle(
+                    color: Color(0xFF56311C),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  );
+                }
+                return TextStyle(
+                  color: Color(0xFF343434).withOpacity(0.45),
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                );
+              }),
+              iconTheme: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return IconThemeData(
+                    color: Color(0xFF56311C),
+                    size: 24,
+                  );
+                }
+                return IconThemeData(
+                  color: Color(0xFF343434).withOpacity(0.45),
+                  size: 24,
+                );
+              }),
+              indicatorColor: Colors.transparent,
+            ),
             child: NavigationBar(
               selectedIndex: controller.bottomIndex.value,
+              backgroundColor: Color(0xFFFCFCFC),
+              indicatorColor: Colors.transparent, // 선택된 항목의 배경색을 투명하게
               onDestinationSelected: (value) {
                 onItemTapped(value);
                 controller.bottomIndex.value = value;
@@ -183,9 +214,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                   icon: ScaleTransition(
                     scale: _animations[0],
                     child: Icon(
-                      controller.bottomIndex.value == 0
-                          ? Icons.home
-                          : Icons.home_outlined,
+                      Icons.home_outlined,
                     ),
                   ),
                   label: "홈",
@@ -194,9 +223,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(10)),
                     child: Icon(
-                      controller.bottomIndex.value == 0
-                          ? Icons.home
-                          : Icons.home_outlined,
+                      Icons.home_outlined,
                     ),
                   ),
                 ),
