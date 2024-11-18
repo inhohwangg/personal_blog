@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         // home: LoginPageTestPage(),
         theme: ThemeData(fontFamily: 'Pretendard'),
         themeMode: ThemeMode.system,
-        // home: AloginPage(),
+        // home: AloginPage(),);
         home: WebViewDownPage());
   }
 }
