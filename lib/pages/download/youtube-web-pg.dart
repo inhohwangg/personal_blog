@@ -83,7 +83,7 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
           print('Received URL for video: $videoUrl');
           if (videoUrl != null) {
             inspect(controller);
-            
+
             downloadVideo(videoUrl!);
           }
         }
@@ -251,8 +251,7 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
         }
 
         // 임시 파일 저장
-        final tempFile = File(
-            '${directory.path}/${videoTitle.value}.mp3');
+        final tempFile = File('${directory.path}/${videoTitle.value}.mp3');
         await tempFile.writeAsBytes(response.data);
 
         // 오디오 편집 다이얼로그 표시
@@ -263,6 +262,7 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('오디오 파일이 다운로드되었습니다: ${tempFile.path}')),
         );
+        await MediaScanner.loadMedia(path: tempFile.path);
         // if (result != null) {
         //   String safeFileName =
         //       result['fileName'].replaceAll(RegExp(r'[\\/:*?"<>|]'), '');
@@ -281,7 +281,6 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
 
         //       if (success) {
         //         // 미디어 스캔 실행
-                await MediaScanner.loadMedia(path: tempFile.path);
 
         //         // 성공 메시지 표시
         //         ScaffoldMessenger.of(context).showSnackBar(
