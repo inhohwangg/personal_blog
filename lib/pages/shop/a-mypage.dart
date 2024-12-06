@@ -14,7 +14,10 @@ mypage() {
       children: [
         Text(
           '마이페이지',
-          style: TextStyle(fontSize: 16, color: Color(0xFF4D2E1C)),
+          style: TextStyle(
+              fontSize: 16,
+              color: Color(0xFF4D2E1C),
+              fontWeight: FontWeight.w600),
         ),
         Gap(20),
         Container(
@@ -98,7 +101,7 @@ mypage() {
             ),
             child: Row(
               children: [
-                Text('상품관리'),
+                Text('상품 관리'),
                 Spacer(),
                 Icon(controller.isExpanded.value
                     ? Icons.keyboard_arrow_up
@@ -123,7 +126,7 @@ mypage() {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("- 사과", style: TextStyle(fontSize: 14)),
-                        SizedBox(height: 10),
+                        SizedBox(height: 20),
                         Text("- 사과즙", style: TextStyle(fontSize: 14)),
                       ],
                     ),
@@ -184,13 +187,19 @@ privateData() {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           width: double.infinity,
           color: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.menu_open),
+              Builder(
+                builder: (context) => IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: Icon(Icons.menu_open)),
+              ),
               Center(
                 child: Text(
                   '개인정보 수정',
@@ -200,14 +209,19 @@ privateData() {
                       fontWeight: FontWeight.w600),
                 ),
               ),
-              Icon(
-                Icons.menu_open,
-                color: Colors.transparent,
+              IconButton(
+                onPressed: () {
+                  controller.tabIndex.value = 0;
+                  controller.bottomIndex.value = 0;
+                },
+                icon: Icon(
+                  Icons.home_outlined,
+                ),
               ),
             ],
           ),
         ),
-        Gap(50),
+        Gap(10),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Text(
@@ -296,20 +310,29 @@ privateData() {
             style: TextStyle(fontSize: 12, color: Color(0xFFFF8484)),
           ),
         ),
-        Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(onPressed: () {}, child: Text('취소')),
-                  ElevatedButton(onPressed: () {}, child: Text('등록')),
-                ],
+        Gap(20),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Color(0xFF856655)),
+            child: Center(
+              child: Text(
+                '저장',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white),
               ),
-            ],
+            ),
           ),
         ),
+        Container(
+          color: Colors.white,
+          height: 100,
+        )
       ],
     ),
   );

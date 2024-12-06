@@ -52,6 +52,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
       }
       controller.bottomIndex.value = index;
       controller.tabIndex.value = index + 4;
+      print(controller.tabIndex.value);
     });
   }
 
@@ -109,6 +110,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                               GestureDetector(
                                 onTap: () {
                                   controller.tabIndex.value = 0;
+                                  controller.bottomIndex.value = 0;
                                 },
                                 child: Text(
                                   '브랜드 스토리',
@@ -119,6 +121,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                               GestureDetector(
                                 onTap: () {
                                   controller.tabIndex.value = 1;
+                                  controller.bottomIndex.value = 0;
                                 },
                                 child: Text(
                                   '과일 소개',
@@ -129,6 +132,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                               GestureDetector(
                                 onTap: () {
                                   controller.tabIndex.value = 2;
+                                  controller.bottomIndex.value = 0;
                                 },
                                 child: Text(
                                   '오시는 길',
@@ -139,6 +143,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                               GestureDetector(
                                 onTap: () {
                                   controller.tabIndex.value = 3;
+                                  controller.bottomIndex.value = 0;
                                 },
                                 child: Text(
                                   '과일 판매',
@@ -150,7 +155,7 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                           ),
                         ),
                         // 나머지 Body 내용 추가
-                        if (controller.tabIndex.value == 0)
+                        if (controller.tabIndex.value == 0 || controller.tabIndex.value == 4)
                           appleInfo()
                         else if (controller.tabIndex.value == 1)
                           applePrice()
@@ -166,6 +171,135 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                           privateData()
                       ],
                     )),
+              ),
+            ],
+          ),
+        ),
+        drawer: 
+        Drawer(
+          backgroundColor: Color(0xFFFCFCFC),
+          width: 200,
+          shape: BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text('마이페이지',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: Color(0xFF4D2E1C)),),
+                ),
+              ),
+              // Gap(10),
+              Divider(
+                height: 1,
+                color: Color(0xFFC8C8C8),
+              ),
+              Gap(10),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text('개인정보 수정',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Color(0xFF343434)),),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                child: Row(
+                  children: [
+                    Text('주문내역 관리',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Color(0xFF343434)),),
+                    Spacer(),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 7.5,vertical: 2.5),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFF9090),
+                        borderRadius: BorderRadius.circular(50)
+                      ),
+                      child: Center(child: Text('7',style: TextStyle(fontSize: 10,fontWeight: FontWeight.w500,color: Colors.white),)),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text('쇼핑몰 관리',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Color(0xFF343434)),),
+                ),
+              ),
+              Obx(() => GestureDetector(
+                onTap: () {
+                  print(controller.isExpanded.value);
+                  controller.isExpanded.value == false
+                      ? controller.isExpanded.value = true
+                      : controller.isExpanded.value = false;
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  width: double.infinity,
+                 
+                  child: Row(
+                    children: [
+                      Text('상품 관리'),
+                      Spacer(),
+                      Icon(controller.isExpanded.value
+                          ? Icons.keyboard_arrow_up
+                          : Icons.keyboard_arrow_down)
+                    ],
+                  ),
+                ),
+              ),) ,
+              Obx(
+                () => AnimatedSize(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.fastEaseInToSlowEaseOut,
+                  child: controller.isExpanded.value
+                      ? Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color(0xFFFAFAFA),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("- 사과", style: TextStyle(fontSize: 14)),
+                              SizedBox(height: 20),
+                              Text("- 사과즙", style: TextStyle(fontSize: 14)),
+                            ],
+                          ),
+                        )
+                      : SizedBox.shrink(), // 닫혔을 때는 빈 공간으로 처리
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text('문의',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Color(0xFF343434)),),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text('자주 묻는 질문',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Color(0xFF343434)),),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text('공지사항',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Color(0xFF343434)),),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text('상품후기',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Color(0xFF343434)),),
+                ),
               ),
             ],
           ),
@@ -286,6 +420,51 @@ class _AhomePageState extends State<AhomePage> with TickerProviderStateMixin {
                 ),
               ],
             ))),
+      ),
+    );
+  }
+}
+
+
+class CustomDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: FractionallySizedBox(
+          heightFactor: 0.75, // 화면 높이의 50%로 설정
+          widthFactor: 0.5,  // 화면 너비의 80%로 설정
+          child: Material(
+            elevation: 0,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                  child: Text(
+                    '헤더',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.home),
+                  title: Text('홈'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                // 추가적인 ListTile 또는 위젯들
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
