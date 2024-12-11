@@ -331,7 +331,7 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
       String audioPath, String defaultFileName) async {
     final player = AudioPlayer();
     await player.setFilePath(audioPath);
-    final duration = await player.duration ?? Duration.zero;
+    final duration = player.duration ?? Duration.zero;
 
     double startTime = 0;
     double endTime = duration.inSeconds.toDouble();
@@ -356,14 +356,14 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
                       ),
                       onChanged: (value) => defaultFileName = value,
                     ),
-                    SizedBox(height: 20),
-                    AudioWaveformWidget(
-                      audioPath: audioPath,
-                      duration: duration,
-                      onSeek: (position) {
-                        player.seek(Duration(seconds: position.toInt()));
-                      },
-                    ),
+                    // SizedBox(height: 20),
+                    // AudioWaveformWidget(
+                    //   audioPath: audioPath,
+                    //   duration: duration,
+                    //   onSeek: (position) {
+                    //     player.seek(Duration(seconds: position.toInt()));
+                    //   },
+                    // ),
                     SizedBox(height: 20),
                     Text(
                         '구간 선택 (${startTime.toStringAsFixed(1)}초 ~ ${endTime.toStringAsFixed(1)}초)'),

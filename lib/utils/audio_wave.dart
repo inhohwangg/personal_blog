@@ -44,34 +44,34 @@ class _AudioWaveformWidgetState extends State<AudioWaveformWidget> {
 
   Future<List<double>> _extractWaveformData(List<int> bytes) async {
     List<double> samples = [];
-    final samplesCount = 100;
+    const samplesCount = 100;
     final samplesPerPixel = bytes.length ~/ samplesCount;
-    
+
     for (var i = 0; i < samplesCount; i++) {
       final start = i * samplesPerPixel;
       final end = start + samplesPerPixel;
       double maxAmplitude = 0.0;
-      
+
       for (var j = start; j < end && j + 1 < bytes.length; j += 2) {
         int sample = bytes[j] | (bytes[j + 1] << 8);
         if (sample > 32767) sample -= 65536;
         double amplitude = sample / 32768.0;
         maxAmplitude = math.max(maxAmplitude, amplitude.abs());
       }
-      
+
       samples.add(maxAmplitude);
     }
 
     // 스무딩 처리
     List<double> smoothedSamples = [];
     const smoothingFactor = 3;
-    
+
     for (var i = 0; i < samples.length; i++) {
       double sum = 0;
       int count = 0;
-      for (var j = math.max(0, i - smoothingFactor); 
-           j < math.min(samples.length, i + smoothingFactor + 1); 
-           j++) {
+      for (var j = math.max(0, i - smoothingFactor);
+          j < math.min(samples.length, i + smoothingFactor + 1);
+          j++) {
         sum += samples[j];
         count++;
       }
@@ -87,7 +87,7 @@ class _AudioWaveformWidgetState extends State<AudioWaveformWidget> {
       return Center(child: CircularProgressIndicator());
     }
 
-    return Container(
+    return SizedBox(
       height: 100,
       child: PolygonWaveform(
         samples: samples,
