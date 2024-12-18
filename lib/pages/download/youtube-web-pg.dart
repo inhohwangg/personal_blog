@@ -207,10 +207,8 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
         throw Exception('Storage permission denied');
       }
 
-      // 제목 가져오기
       final title = await getYouTubeTitle();
 
-      // 다운로드 진행 상태 표시
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -228,94 +226,47 @@ class _WebViewDownPageState extends State<WebViewDownPage> {
         },
       );
 
-      // API 요청
       final response = await dio.post(
         'https://side.inhodev.shop/youtube/audio',
         data: {'url': youtubeUrl},
         options: Options(
           responseType: ResponseType.bytes,
+          followRedirects: true,
+          validateStatus: (status) => status! < 500,
           headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            'Accept': '*/*',
           },
         ),
       );
 
-      // 다운로드 다이얼로그 닫기
       Navigator.pop(context);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.data != null) {
         final directory = Directory('/storage/emulated/0/Download');
-        if (!await directory.exists()) {
-          await directory.create(recursive: true);
+        await directory.create(recursive: true);
+
+        // 파일명에서 특수문자 제거
+        final safeTitle =
+            title?.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_') ?? 'audio';
+        final tempFile = File('${directory.path}/$safeTitle.mp3');
+
+        // 파일 쓰기 전 존재하는 파일 삭제
+        if (await tempFile.exists()) {
+          await tempFile.delete();
         }
 
-        // 임시 파일 저장
-        final tempFile = File('${directory.path}/${videoTitle.value}.mp3');
         await tempFile.writeAsBytes(response.data);
 
-        // 오디오 편집 다이얼로그 표시
-        final result =
-            await showAudioEditorDialog(tempFile.path, title ?? 'audio');
-
-        // 다운로드 완료 메시지 표시
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('오디오 파일이 다운로드되었습니다: ${tempFile.path}')),
-        );
-        await MediaScanner.loadMedia(path: tempFile.path);
-        // if (result != null) {
-        //   String safeFileName =
-        //       result['fileName'].replaceAll(RegExp(r'[\\/:*?"<>|]'), '');
-        //   final String outputPath = '${directory.path}/$safeFileName.mp3';
-
-        //   if (result['isEdited']) {
-        //     try {
-        //       // FFmpeg로 오디오 편집
-        //       final success = await editAudio(
-        //         tempFile.path,
-        //         outputPath,
-        //         result['startTime'],
-        //         result['endTime'],
-        //         result['volume'],
-        //       );
-
-        //       if (success) {
-        //         // 미디어 스캔 실행
-
-        //         // 성공 메시지 표시
-        //         ScaffoldMessenger.of(context).showSnackBar(
-        //           SnackBar(content: Text('편집된 오디오 저장 완료: $outputPath')),
-        //         );
-        //       } else {
-        //         throw Exception('오디오 편집 실패');
-        //       }
-        //     } catch (e) {
-        //       print('Error during audio editing: $e');
-        //       ScaffoldMessenger.of(context).showSnackBar(
-        //         SnackBar(content: Text('오디오 편집 실패: $e')),
-        //       );
-
-        //       // 편집 실패 시 원본 파일 복사
-        //       await tempFile.copy(outputPath);
-        //       await MediaScanner.loadMedia(path: outputPath);
-        //       ScaffoldMessenger.of(context).showSnackBar(
-        //         SnackBar(content: Text('원본 파일로 저장됨: $outputPath')),
-        //       );
-        //     }
-        //   } else {
-        //     // 편집하지 않고 저장
-        //     await tempFile.copy(outputPath);
-        //     await MediaScanner.loadMedia(path: outputPath);
-        //     ScaffoldMessenger.of(context).showSnackBar(
-        //       SnackBar(content: Text('오디오 저장 완료: $outputPath')),
-        //     );
-        //   }
-
-        //   // 임시 파일 삭제
-        //   if (await tempFile.exists()) {
-        //     await tempFile.delete();
-        //   }
-        // }
+        // 파일 존재 확인
+        if (await tempFile.exists()) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('오디오 파일이 다운로드되었습니다: ${tempFile.path}')),
+          );
+          await MediaScanner.loadMedia(path: tempFile.path);
+        } else {
+          throw Exception('Failed to save file');
+        }
       } else {
         throw Exception('Failed to download audio: ${response.statusCode}');
       }
