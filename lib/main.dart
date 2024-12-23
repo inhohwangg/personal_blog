@@ -2,9 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:personal_blog/pages/shop/a-login-page.dart';
-
-import 'pages/download/download-pg.dart';
 import 'pages/download/youtube-web-pg.dart';
 
 class NoCheckCertificateHttpOverrides extends HttpOverrides {

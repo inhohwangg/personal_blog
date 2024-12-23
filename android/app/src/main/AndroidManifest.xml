@@ -7,12 +7,12 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
     <application
-        android:label="할일 앱"
+        android:label="UR:S"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true" 
         android:requestLegacyExternalStorage="true"
         android:enableOnBackInvokedCallback="true"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@drawable/urs">
         <activity
             android:name=".MainActivity"
             android:exported="true"
